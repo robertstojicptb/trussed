@@ -9,6 +9,7 @@ use crate::Bytes;
 use crate::platform::*;
 use crate::config::*;
 use crate::error::Error;
+use crate::hwcrypto::HWCrypto;
 pub use crate::key;
 use crate::mechanisms;
 use crate::pipe::TrussedInterchange;
@@ -63,6 +64,10 @@ where P: Platform
     read_dir_files_state: Option<ReadDirFilesState>,
     read_dir_state: Option<ReadDirState>,
     rng_state: Option<ChaCha8Rng>,
+    // hardware accelerator
+    // TODO: generalize this to a Vec<Box<dyn HWCrypto<P>>>?
+    // Box on heapless looks messy...
+    hwcrypto: Option<crate::hwcrypto::se050::Se050Wrapper>,
 }
 
 impl<P: Platform> ServiceResources<P> {
@@ -74,6 +79,7 @@ impl<P: Platform> ServiceResources<P> {
             read_dir_files_state: None,
             read_dir_state: None,
             rng_state: None,
+            hwcrypto: None,
         }
     }
 }
@@ -91,6 +97,14 @@ impl<P: Platform> ServiceResources<P> {
     pub fn reply_to(&mut self, client_id: PathBuf, request: &Request) -> Result<Reply, Error> {
         // TODO: what we want to do here is map an enum to a generic type
         // Is there a nicer way to do this?
+
+        if self.hwcrypto.is_some() {
+            let hcp: &mut dyn HWCrypto<P> = self.hwcrypto.as_mut().unwrap();
+            let r = hcp.reply_to(client_id.clone(), request);
+            if r != Err(Error::NoHardwareAcceleration) {
+                return r;
+            }
+        }
 
         let full_store = self.platform.store();
 
@@ -644,6 +658,10 @@ impl<P: Platform> Service<P> {
     pub fn new(platform: P) -> Self {
         let resources = ServiceResources::new(platform);
         Self { eps: Vec::new(), resources }
+    }
+
+    pub fn add_hwcrypto_provider(&mut self, cp: crate::hwcrypto::se050::Se050Wrapper) {
+        self.resources.hwcrypto = Some(cp);
     }
 
     /// Add a new client, claiming one of the statically configured

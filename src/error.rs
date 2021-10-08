@@ -31,6 +31,7 @@ pub enum Error {
     InvalidSerializedKey,
     InvalidSerializationFormat,
     MechanismNotAvailable,
+    NoHardwareAcceleration,
     NonceOverflow,
     NoSuchCertificate,
     NoSuchKey,
