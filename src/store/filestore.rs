@@ -21,18 +21,17 @@ pub struct ReadDirFilesState {
 }
 
 use littlefs2::{fs::DirEntry, path::{Path, PathBuf}};
-pub type ClientId = PathBuf;
 
 pub struct ClientFilestore<S>
 where
     S: Store,
 {
-    client_id: ClientId,
+    client_id: PathBuf,
     store: S,
 }
 
 impl<S: Store> ClientFilestore<S> {
-    pub fn new(client_id: ClientId, store: S) -> Self {
+    pub fn new(client_id: PathBuf, store: S) -> Self {
         Self { client_id, store }
     }
 
