@@ -10,20 +10,17 @@ use crate::{
     types::{KeyId, Location},
 };
 
-
-pub type ClientId = littlefs2::path::PathBuf;
-
 pub struct ClientKeystore<P>
 where
     P: Platform,
 {
-    client_id: ClientId,
+    client_id: PathBuf,
     rng: ChaCha8Rng,
     store: P::S,
 }
 
 impl<'a, P: Platform> ClientKeystore<P> {
-    pub fn new(client_id: ClientId, rng: ChaCha8Rng, store: P::S) -> Self {
+    pub fn new(client_id: PathBuf, rng: ChaCha8Rng, store: P::S) -> Self {
         Self { client_id, rng, store }
     }
 }

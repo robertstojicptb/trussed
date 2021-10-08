@@ -236,7 +236,18 @@ pub mod consent {
 // pub type AeadTag = [u8; 16];
 
 // pub type ClientId = heapless::Vec<u8, heapless::consts::U32>;
-pub type ClientId = PathBuf;
+/**
+The "ClientId" struct is the closest equivalent to a PCB that Trussed
+currently has. Trussed currently uses it to choose the client-specific
+subtree in the filesystem (see docs in src/store.rs) and to let clients
+opt into hardware-backed crypto.
+*/
+#[derive(Clone)]
+pub struct ClientId {
+    pub path: PathBuf,
+    pub use_hwcrypto: bool,
+    pub pin: Option<[u8; MAX_PIN_LENGTH]>,
+}
 
 // Object Hierarchy according to Cryptoki
 // - Storage

@@ -20,6 +20,7 @@ pub type MAX_SERVICE_CLIENTS = consts::U5;
 pub const MAX_SHORT_DATA_LENGTH: usize = 128;
 pub const MAX_SIGNATURE_LENGTH: usize = 72;
 pub const MAX_USER_ATTRIBUTE_LENGTH: usize = 256;
+pub const MAX_PIN_LENGTH: usize = 32;
 
 pub const USER_ATTRIBUTE_NUMBER: u8 = 37;
 
