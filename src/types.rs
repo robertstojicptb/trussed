@@ -245,8 +245,13 @@ opt into hardware-backed crypto.
 #[derive(Clone)]
 pub struct ClientId {
     pub path: PathBuf,
-    pub use_hwcrypto: bool,
-    pub pin: Option<[u8; MAX_PIN_LENGTH]>,
+    pub hwcrypto_params: crate::hwcrypto::HWCryptoParameters,
+}
+
+impl ClientId {
+    pub fn new(id: &str) -> Self {
+        Self { path: littlefs2::path::PathBuf::from(id), hwcrypto_params: crate::hwcrypto::HWCryptoParameters::default() }
+    }
 }
 
 // Object Hierarchy according to Cryptoki

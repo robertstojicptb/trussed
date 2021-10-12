@@ -9,7 +9,7 @@ use crate::Bytes;
 use crate::platform::*;
 use crate::config::*;
 use crate::error::Error;
-use crate::hwcrypto::HWCrypto;
+use crate::hwcrypto::{HWCryptoDrivers, HWCryptoParameters};
 pub use crate::key;
 use crate::mechanisms;
 use crate::pipe::TrussedInterchange;
@@ -67,7 +67,7 @@ where P: Platform
     // hardware accelerator
     // TODO: generalize this to a Vec<Box<dyn HWCrypto<P>>>?
     // Box on heapless looks messy...
-    hwcrypto: Option<crate::hwcrypto::se050::Se050Wrapper>,
+    hwcrypto: HWCryptoDrivers,
 }
 
 impl<P: Platform> ServiceResources<P> {
@@ -79,7 +79,7 @@ impl<P: Platform> ServiceResources<P> {
             read_dir_files_state: None,
             read_dir_state: None,
             rng_state: None,
-            hwcrypto: None,
+            hwcrypto: Default::default(),
         }
     }
 }
@@ -98,12 +98,9 @@ impl<P: Platform> ServiceResources<P> {
         // TODO: what we want to do here is map an enum to a generic type
         // Is there a nicer way to do this?
 
-        if self.hwcrypto.is_some() && client_id.use_hwcrypto {
-            let hcp: &mut dyn HWCrypto<P> = self.hwcrypto.as_mut().unwrap();
-            let r = hcp.reply_to(client_id.clone(), request);
-            if r != Err(Error::NoHardwareAcceleration) {
-                return r;
-            }
+        let r = crate::hwcrypto::reply_to::<P>(&mut self.hwcrypto, client_id.clone(), request);
+        if r != Err(Error::NoHardwareAcceleration) {
+            return r;
         }
 
         let full_store = self.platform.store();
@@ -660,8 +657,8 @@ impl<P: Platform> Service<P> {
         Self { eps: Vec::new(), resources }
     }
 
-    pub fn add_hwcrypto_provider(&mut self, cp: crate::hwcrypto::se050::Se050Wrapper) {
-        self.resources.hwcrypto = Some(cp);
+    pub fn add_hwcrypto_drivers(&mut self, drivers: HWCryptoDrivers) {
+        self.resources.hwcrypto = drivers;
     }
 
     /// Add a new client, claiming one of the statically configured
@@ -672,7 +669,7 @@ impl<P: Platform> Service<P> {
     {
         use interchange::Interchange;
         let (requester, responder) = TrussedInterchange::claim().ok_or(())?;
-        let client_id = ClientId { path: PathBuf::from(client_id.as_bytes()), use_hwcrypto: false, pin: None };
+        let client_id = ClientId::new(client_id);
         self.add_endpoint(responder, client_id).map_err(|_service_endpoint| ())?;
 
         Ok(crate::client::ClientImplementation::new(requester, syscall))
@@ -687,7 +684,7 @@ impl<P: Platform> Service<P> {
     {
         use interchange::Interchange;
         let (requester, responder) = TrussedInterchange::claim().ok_or(())?;
-        let client_id = ClientId { path: PathBuf::from(client_id.as_bytes()), use_hwcrypto: false, pin: None };
+        let client_id = ClientId::new(client_id);
         self.add_endpoint(responder, client_id).map_err(|_service_endpoint| ())?;
 
         Ok(crate::client::ClientImplementation::new(requester, self))

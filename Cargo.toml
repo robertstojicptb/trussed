@@ -26,6 +26,7 @@ postcard = "0.7.0"
 rand_core = "0.6"
 serde = { version = "1.0", default-features = false }
 zeroize = { version = "1.2", default-features = false, features = ["zeroize_derive"] }
+se050 = { path = "../solo2/components/se050", optional = true }
 
 # RustCrypto
 aes = { version = "0.7", default-features = false }
@@ -117,6 +118,8 @@ clients-9 = []
 clients-10 = []
 clients-11 = []
 clients-12 = []
+
+hwcrypto-se050 = ["se050"]
 
 test-attestation-cert-ids = []
 # [patch.crates-io]
