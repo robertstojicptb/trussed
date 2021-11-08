@@ -27,7 +27,7 @@ impl DeriveKey for super::HmacSha256
         let derived_key: [u8; 32] = mac.finalize().into_bytes().try_into().map_err(|_| Error::InternalError)?;
         let key_id = keystore.store_key(
             request.attributes.persistence,
-            key::Secrecy::Secret, key::Kind::Symmetric(32),
+            key::Secrecy::Secret, key::Kind::Symmetric(32).into(),
             &derived_key)?;
 
         Ok(reply::DeriveKey { key: key_id })

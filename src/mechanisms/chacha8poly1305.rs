@@ -30,7 +30,7 @@ impl GenerateKey for super::Chacha8Poly1305 {
         let key_id = keystore.store_key(
             request.attributes.persistence,
             key::Secrecy::Secret,
-            key::Kind::Symmetric32Nonce(12),
+            key::Kind::Symmetric32Nonce(12).into(),
             &serialized,
         )?;
 
@@ -226,7 +226,7 @@ impl UnwrapKey for super::Chacha8Poly1305
             request.attributes.persistence,
             // using for signing keys... we need to know
             key::Secrecy::Secret,
-            kind,
+            kind.into(),
             &material,
         )?;
 

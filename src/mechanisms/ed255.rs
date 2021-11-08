@@ -49,7 +49,7 @@ impl DeriveKey for super::Ed255
 
         let public_id = keystore.store_key(
             request.attributes.persistence,
-            key::Secrecy::Public, key::Kind::Ed255,
+            key::Secrecy::Public, key::Kind::Ed255.into(),
             keypair.public.as_bytes())?;
 
         Ok(reply::DeriveKey {
@@ -83,7 +83,7 @@ impl DeserializeKey for super::Ed255
 
         let public_id = keystore.store_key(
             request.attributes.persistence,
-            key::Secrecy::Public, key::Kind::Ed255,
+            key::Secrecy::Public, key::Kind::Ed255.into(),
             public_key.as_bytes())?;
 
         Ok(reply::DeserializeKey {

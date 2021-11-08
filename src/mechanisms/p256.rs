@@ -54,7 +54,7 @@ impl Agree for super::P256
 
         let key_id = keystore.store_key(
             request.attributes.persistence,
-            key::Secrecy::Secret, key::Kind::Shared(32),
+            key::Secrecy::Secret, key::Kind::Shared(32).into(),
             shared_secret.as_bytes())?;
 
         // return handle
@@ -76,7 +76,7 @@ impl DeriveKey for super::P256
 
         let public_id = keystore.store_key(
             request.attributes.persistence,
-            key::Secrecy::Public, key::Kind::P256,
+            key::Secrecy::Public, key::Kind::P256.into(),
             &public_key.to_compressed_sec1_bytes())?;
 
         Ok(reply::DeriveKey {
@@ -146,7 +146,7 @@ impl DeserializeKey for super::P256
 
         let public_id = keystore.store_key(
             request.attributes.persistence,
-            key::Secrecy::Public, key::Kind::P256,
+            key::Secrecy::Public, key::Kind::P256.into(),
             &public_key.to_compressed_sec1_bytes())?;
 
 

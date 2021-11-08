@@ -32,7 +32,7 @@ pub trait Keystore {
     // fn store(&self, key: Key, location: Location) -> Result<KeyId>;
     // fn load(&self, key: KeyId) -> Result<Key>;
     // fn exists(&self, key: KeyId) -> bool;
-    fn store_key(&mut self, location: Location, secrecy: key::Secrecy, info: impl Into<key::Info>, material: &[u8]) -> Result<KeyId>;
+    fn store_key(&mut self, location: Location, secrecy: key::Secrecy, info: key::Info, material: &[u8]) -> Result<KeyId>;
     fn exists_key(&self, secrecy: key::Secrecy, kind: Option<key::Kind>, id: &KeyId) -> bool;
     /// Return Header of key, if it exists
     fn key_info(&self, secrecy: key::Secrecy, id: &KeyId) -> Option<key::Info>;
@@ -92,7 +92,7 @@ impl<P: Platform> Keystore for ClientKeystore<P> {
     }
 
     #[inline(never)]
-    fn store_key(&mut self, location: Location, secrecy: key::Secrecy, info: impl Into<key::Info>, material: &[u8]) -> Result<KeyId> {
+    fn store_key(&mut self, location: Location, secrecy: key::Secrecy, info: key::Info, material: &[u8]) -> Result<KeyId> {
         // info_now!("storing {:?} -> {:?}", &key_kind, location);
 
         let mut info: key::Info = info.into();

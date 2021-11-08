@@ -57,7 +57,7 @@ impl Agree for super::X255
 
         let key_id = keystore.store_key(
             request.attributes.persistence,
-            key::Secrecy::Secret, key::Kind::Shared(32),
+            key::Secrecy::Secret, key::Kind::Shared(32).into(),
             &shared_secret)?;
 
         // return handle
@@ -116,7 +116,7 @@ impl DeriveKey for super::X255
         let public_key_bytes = public_key.to_bytes();
         let public_id = keystore.store_key(
             request.attributes.persistence,
-            key::Secrecy::Public, key::Kind::X255,
+            key::Secrecy::Public, key::Kind::X255.into(),
             &public_key_bytes)?;
 
         Ok(reply::DeriveKey { key: public_id })
@@ -171,7 +171,7 @@ impl DeserializeKey for super::X255
 
         let public_id = keystore.store_key(
             request.attributes.persistence,
-            key::Secrecy::Public, key::Kind::X255,
+            key::Secrecy::Public, key::Kind::X255.into(),
             &public_key.to_bytes())?;
 
         Ok(reply::DeserializeKey { key: public_id })

@@ -95,9 +95,6 @@ unsafe impl<P: Platform> Send for Service<P> {}
 impl<P: Platform> ServiceResources<P> {
 
     pub fn reply_to(&mut self, client_id: ClientId, request: &Request) -> Result<Reply, Error> {
-        // TODO: what we want to do here is map an enum to a generic type
-        // Is there a nicer way to do this?
-
         let r = crate::hwcrypto::reply_to::<P>(&mut self.hwcrypto, client_id.clone(), request);
         if r != Err(Error::NoHardwareAcceleration) {
             return r;
@@ -136,6 +133,8 @@ impl<P: Platform> ServiceResources<P> {
         );
         let filestore = &mut filestore;
 
+        // TODO: what we want to do here is map an enum to a generic type
+        // Is there a nicer way to do this?
         match request {
             Request::DummyRequest => {
                 Ok(Reply::DummyReply)
@@ -249,7 +248,7 @@ impl<P: Platform> ServiceResources<P> {
                 let key_id = keystore.store_key(
                     request.attributes.persistence,
                     key::Secrecy::Secret,
-                    key::Kind::Symmetric(size),
+                    key::Kind::Symmetric(size).into(),
                     &secret_key[..size],
                 )?;
                 Ok(Reply::GenerateSecretKey(reply::GenerateSecretKey { key: key_id }))
@@ -264,7 +263,7 @@ impl<P: Platform> ServiceResources<P> {
                 let key_id = keystore.store_key(
                     request.location,
                     key::Secrecy::Secret,
-                    key::Kind::Shared(request.raw_key.len()),
+                    key::Kind::Shared(request.raw_key.len()).into(),
                     &request.raw_key,
                 )?;
 

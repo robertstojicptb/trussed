@@ -24,7 +24,7 @@ impl DeriveKey for super::Sha256
 
         let key_id = keystore.store_key(
             request.attributes.persistence,
-            key::Secrecy::Secret, key::Kind::Symmetric(32),
+            key::Secrecy::Secret, key::Kind::Symmetric(32).into(),
             &symmetric_key)?;
 
         Ok(reply::DeriveKey { key: key_id })
