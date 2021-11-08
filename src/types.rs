@@ -127,7 +127,6 @@ macro_rules! impl_id { ($Name:ident) => {
 
 impl_id!(CertId);
 impl_id!(CounterId);
-impl_id!(KeyId);
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, serde::Deserialize, serde::Serialize)]
 pub struct Id2 {
@@ -158,6 +157,7 @@ macro_rules! impl_id2 { ($Name:ident) => {
 
 }}
 
+impl_id2!(KeyId);
 // TODO: decide whether this is good idea.
 // It would allow using the same underlying u128 ID for the public key of the private
 // key in a keypair. However, DeleteKey and others would need to be adjusted.

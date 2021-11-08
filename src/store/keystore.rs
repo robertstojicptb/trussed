@@ -46,8 +46,19 @@ pub trait Keystore {
 
 impl<P: Platform> ClientKeystore<P> {
 
-    pub fn generate_key_id(&mut self) -> KeyId {
-        KeyId::new(self.rng())
+    pub fn new_random_key_id(&mut self, secrecy: key::Secrecy) -> KeyId {
+	use rand_core::RngCore;
+
+	let mut buf = [0u8; 12];
+	let mut keyid: KeyId;
+	loop {
+		self.rng().fill_bytes(&mut buf);
+		keyid = KeyId::new(0u32, &buf);
+		if ! self.exists_key(secrecy, None, &keyid) {
+			break;
+		}
+	}
+        keyid
     }
 
     pub fn key_directory(&self, secrecy: key::Secrecy) -> PathBuf {
@@ -62,7 +73,13 @@ impl<P: Platform> ClientKeystore<P> {
 
     pub fn key_path(&self, secrecy: key::Secrecy, id: &KeyId) -> PathBuf {
         let mut path = self.key_directory(secrecy);
-        path.push(&PathBuf::from(id.hex().as_slice()));
+	const HEX: &[u8] = b"0123456789abcdef";
+	let mut objhex: [u8; 24] = [0u8; 24];
+	for i in 0..id.0.object_id.len() {
+		objhex[2*i] = HEX[(id.0.object_id[i] >> 4) as usize];
+		objhex[2*i+1] = HEX[(id.0.object_id[i] & 0xf) as usize];
+	}
+        path.push(&PathBuf::from(&objhex));
         path
     }
 
@@ -88,7 +105,7 @@ impl<P: Platform> Keystore for ClientKeystore<P> {
             material: key::Material::from_slice(material).unwrap(),
         };
 
-        let id = self.generate_key_id();
+        let id = self.new_random_key_id(secrecy);
         let path = self.key_path(secrecy, &id);
         store::store(self.store, location, &path, &key.serialize())?;
 
