@@ -89,33 +89,6 @@ impl Id {
         buffer
     }
 
-    // NOT IMPLEMENTED, as this would allow clients to create non-random (non-special) IDs.
-    // For testing, can construct directly as the newtypes have pub(crate) access.
-    // #[allow(clippy::result_unit_err)]
-    // pub fn try_from_hex(hex: &[u8]) -> core::result::Result<Self, ()> {
-    //     // https://stackoverflow.com/a/52992629
-    //     // (0..hex.len())
-    //     // use hex::FromHex;
-    //     // let maybe_bytes = <[u8; 16]>::from_hex(hex).map_err(|e| ());
-    //     // maybe_bytes.map(|bytes| Self(Bytes::from_slice(&bytes).unwrap()))
-    //     if (hex.len() & 1) == 1 {
-    //         // panic!("hex len & 1 =  {}", hex.len() & 1);
-    //         return Err(());
-    //     }
-    //     if hex.len() > 32 {
-    //         // panic!("hex len {}", hex.len());
-    //         return Err(());
-    //     }
-    //     // let hex = core::str::from_utf8(hex).map_err(|e| ())?;
-    //     let hex = core::str::from_utf8(hex).unwrap();
-    //     // let hex = core::str::from_utf8_unchecked(hex);
-    //     let mut bytes = [0u8; 16];
-    //     for i in 0..(hex.len() >> 1) {
-    //         // bytes[i] = u8::from_str_radix(&hex[i..][..2], 16).map_err(|e| ())?;
-    //         bytes[i] = u8::from_str_radix(&hex[2*i..][..2], 16).unwrap();
-    //     }
-    //     Ok(Self(u128::from_be_bytes(bytes)))
-    // }
 }
 
 macro_rules! impl_id { ($Name:ident) => {
@@ -155,6 +128,36 @@ macro_rules! impl_id { ($Name:ident) => {
 impl_id!(CertId);
 impl_id!(CounterId);
 impl_id!(KeyId);
+
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, serde::Deserialize, serde::Serialize)]
+pub struct Id2 {
+	pub(crate) provider_id: u32,
+	pub(crate) object_id: [u8; 12]
+}
+
+impl core::fmt::Debug for Id2 {
+	fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+		write!(f, "Id2({:08x}:", self.provider_id)?;
+		for i in 0..self.object_id.len() {
+			write!(f, "{:02x}", self.object_id[i])?;
+		}
+		write!(f, ")")
+	}
+}
+
+macro_rules! impl_id2 { ($Name:ident) => {
+    #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, serde::Deserialize, serde::Serialize)]
+    #[serde(transparent)]
+    pub struct $Name(pub(crate) Id2);
+
+    impl $Name {
+	pub const fn new(provider_id: u32, object_id: &[u8; 12]) -> Self {
+		Self(Id2 { provider_id, object_id: *object_id })
+	}
+    }
+
+}}
+
 // TODO: decide whether this is good idea.
 // It would allow using the same underlying u128 ID for the public key of the private
 // key in a keypair. However, DeleteKey and others would need to be adjusted.
