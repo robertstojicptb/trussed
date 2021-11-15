@@ -22,6 +22,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::config::*;
 use crate::key::Secrecy;
+use crate::store::filestore::{ReadDirState, ReadDirFilesState};
 
 pub use crate::platform::Platform;
 pub use crate::client::FutureResult;
@@ -238,10 +239,13 @@ pub mod consent {
 /**
 The "ClientId" struct is the closest equivalent to a PCB that Trussed
 currently has. Trussed currently uses it to choose the client-specific
-subtree in the filesystem (see docs in src/store.rs).
+subtree in the filesystem (see docs in src/store.rs) and to maintain
+the walker state of the directory traversal syscalls.
 */
 pub struct ClientId {
     pub path: PathBuf,
+    pub(crate) read_dir_state: Option<ReadDirState>,
+    pub(crate) read_dir_files_state: Option<ReadDirFilesState>,
 }
 
 impl core::convert::From<PathBuf> for ClientId {
@@ -258,7 +262,11 @@ impl core::convert::From<&str> for ClientId {
 
 impl ClientId {
     pub fn new(path: PathBuf) -> Self {
-        Self { path }
+        Self {
+            path,
+            read_dir_state: None,
+            read_dir_files_state: None
+        }
     }
 }
 
