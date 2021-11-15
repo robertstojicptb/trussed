@@ -65,8 +65,6 @@ where P: Platform
     read_dir_state: Option<ReadDirState>,
     rng_state: Option<ChaCha8Rng>,
     // hardware accelerator
-    // TODO: generalize this to a Vec<Box<dyn HWCrypto<P>>>?
-    // Box on heapless looks messy...
     hwcrypto: HWCryptoDrivers,
 }
 

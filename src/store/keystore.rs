@@ -19,7 +19,7 @@ where
     store: P::S,
 }
 
-impl<'a, P: Platform> ClientKeystore<P> {
+impl<P: Platform> ClientKeystore<P> {
     pub fn new(client_id: PathBuf, rng: ChaCha8Rng, store: P::S) -> Self {
         Self { client_id, rng, store }
     }
@@ -46,6 +46,7 @@ pub trait Keystore {
 
 impl<P: Platform> ClientKeystore<P> {
 
+    /// generates a new key ID (retries on collision with an existing key)
     pub fn new_random_key_id(&mut self, secrecy: key::Secrecy) -> KeyId {
 	use rand_core::RngCore;
 
@@ -206,6 +207,113 @@ impl<P: Platform> Keystore for ClientKeystore<P> {
         }
 
         None
+    }
+
+}
+
+pub struct AbstractKeystore<P> where P: Platform {
+    software: ClientKeystore<P>,
+    #[cfg(feature = "hwcrypto-se050")]
+    se050: Option<crate::hwcrypto::se050::Se050Keystore>,
+}
+
+impl<P> AbstractKeystore<P> where P: Platform {
+    fn provider_from_keyid(&self, id: &KeyId) -> Option<&dyn Keystore> {
+        if id.0.provider_id == 0u32 {
+            return Some(&self.software)
+        }
+        #[cfg(feature = "hwcrypto-se050")]
+        if id.0.provider_id == crate::hwcrypto::se050::SE050_PROVIDER_ID {
+            match &self.se050 {
+            Some(se050_prov) => { return Some(se050_prov as &dyn Keystore); },
+            None => { return None; }
+            }
+        }
+        None
+    }
+
+    fn provider_from_keyid_mut(&mut self, id: &KeyId) -> Option<&mut dyn Keystore> {
+        if id.0.provider_id == 0u32 {
+            return Some(&mut self.software)
+        }
+        #[cfg(feature = "hwcrypto-se050")]
+        if id.0.provider_id == crate::hwcrypto::se050::SE050_PROVIDER_ID {
+            match &mut self.se050 {
+            Some(se050_prov) => { return Some(se050_prov as &mut dyn Keystore); },
+            None => { return None; }
+            }
+        }
+        None
+    }
+
+    // store_key() intentionally not implemented for AbstractKeystore!
+
+    pub fn exists_key(&self, secrecy: key::Secrecy, kind: Option<key::Kind>, id: &KeyId) -> bool {
+        let provider = self.provider_from_keyid(id);
+        if let Some(prov) = provider {
+            prov.exists_key(secrecy, kind, id)
+        } else {
+            false
+        }
+    }
+
+    pub fn key_info(&self, secrecy: key::Secrecy, id: &KeyId) -> Option<key::Info> {
+        let provider = self.provider_from_keyid(id);
+        if let Some(prov) = provider {
+            prov.key_info(secrecy, id)
+        } else {
+            None
+        }
+    }
+
+    pub fn delete_key(&self, id: &KeyId) -> bool {
+        let provider = self.provider_from_keyid(id);
+        if let Some(prov) = provider {
+            prov.delete_key(id)
+        } else {
+            false
+        }
+    }
+
+    pub fn delete_all(&self, location: Location) -> Result<usize> {
+        let mut count: usize = 0;
+        if let Ok(cnt) = self.software.delete_all(location) {
+            count += cnt;
+        }
+        #[cfg(feature = "hwcrypto-se050")]
+        if let Some(se050_provider) = &self.se050 {
+            if let Ok(cnt) = se050_provider.delete_all(location) {
+                count += cnt;
+            }
+        }
+        Ok(count)
+    }
+
+    pub fn load_key(&self, secrecy: key::Secrecy, kind: Option<key::Kind>, id: &KeyId) -> Result<key::Key> {
+        let provider = self.provider_from_keyid(id);
+        if let Some(prov) = provider {
+            prov.load_key(secrecy, kind, id)
+        } else {
+            Err(Error::NoSuchKey)
+        }
+    }
+
+    pub fn overwrite_key(&self, location: Location, secrecy: key::Secrecy, kind: key::Kind, id: &KeyId, material: &[u8]) -> Result<()> {
+        let provider = self.provider_from_keyid(id);
+        if let Some(prov) = provider {
+            prov.overwrite_key(location, secrecy, kind, id, material)
+        } else {
+            Err(Error::NoSuchKey)
+        }
+    }
+
+    pub fn location(&self, secrecy: key::Secrecy, id: &KeyId) -> Option<Location> {
+        let provider = self.provider_from_keyid(id);
+        if let Some(prov) = provider {
+            prov.location(secrecy, id)
+        } else {
+            None
+        }
     }
 
 }
