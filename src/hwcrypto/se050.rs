@@ -20,7 +20,7 @@ pub struct Se050CryptoParameters {
 }
 
 impl<P> hwcrypto::HWCrypto<P> for Se050Wrapper where P: Platform {
-	fn reply_to(&mut self, _client_id: ClientId, request: &Request) -> Result<Reply> {
+	fn reply_to(&mut self, _client_id: &ClientId, request: &Request) -> Result<Reply> {
 		match request {
 		Request::Encrypt(request) => {
 			match request.mechanism {

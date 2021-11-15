@@ -18,7 +18,7 @@ request processing - any other return value will be directly returned to
 the client.
 */
 pub trait HWCrypto<P> where P: Platform {
-	fn reply_to(&mut self, client_id: ClientId, request: &Request) -> Result<Reply, Error>;
+	fn reply_to(&mut self, client_id: &ClientId, request: &Request) -> Result<Reply, Error>;
 }
 
 /**
@@ -52,7 +52,7 @@ in turn, if
      (such as a specific PIN) in HWCryptoParameters (which is a
      member of ClientId)
 */
-pub fn reply_to<P>(drivers: &mut HWCryptoDrivers, client_id: ClientId, request: &Request) -> Result<Reply, Error> where P: Platform {
+pub fn reply_to<P>(drivers: &mut HWCryptoDrivers, client_id: &ClientId, request: &Request) -> Result<Reply, Error> where P: Platform {
 	macro_rules! dispatch_hwcrypto {
 	($member:ident) => {
 		if client_id.hwcrypto_params.$member.is_some() && drivers.$member.is_some() {

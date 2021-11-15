@@ -23,6 +23,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::config::*;
 use crate::key::Secrecy;
+use crate::store::filestore::{ReadDirState, ReadDirFilesState};
 
 pub use crate::platform::Platform;
 pub use crate::client::FutureResult;
@@ -238,22 +239,27 @@ pub mod consent {
 // pub type AeadNonce = [u8; 12];
 // pub type AeadTag = [u8; 16];
 
-// pub type ClientId = heapless::Vec<u8, heapless::consts::U32>;
 /**
 The "ClientId" struct is the closest equivalent to a PCB that Trussed
 currently has. Trussed currently uses it to choose the client-specific
 subtree in the filesystem (see docs in src/store.rs) and to let clients
 opt into hardware-backed crypto.
 */
-#[derive(Clone)]
+// #[derive(Clone)]
 pub struct ClientId {
     pub path: PathBuf,
+    pub(crate) read_dir_state: Option<ReadDirState>,
+    pub(crate) read_dir_files_state: Option<ReadDirFilesState>,
     pub hwcrypto_params: crate::hwcrypto::HWCryptoParameters,
 }
 
 impl ClientId {
     pub fn new(id: &str) -> Self {
-        Self { path: littlefs2::path::PathBuf::from(id), hwcrypto_params: crate::hwcrypto::HWCryptoParameters::default() }
+        Self {
+            path: PathBuf::from(id),
+            read_dir_state: None,
+            read_dir_files_state: None,
+            hwcrypto_params: crate::hwcrypto::HWCryptoParameters::default() }
     }
 }
 
