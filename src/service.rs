@@ -562,6 +562,25 @@ impl<P: Platform> ServiceResources<P> {
                     .map(|id| Reply::WriteCertificate(reply::WriteCertificate { id } ))
             }
 
+            Request::DrawFilledRect(request) => {
+                self.platform.user_interface().draw_filled_rect(
+                    request.posx, request.posy, request.width, request.height,
+                    request.color);
+                Ok(Reply::DrawFilledRect(reply::DrawFilledRect {} ))
+            }
+
+            Request::DrawText(request) => {
+                self.platform.user_interface().draw_text(
+                    request.posx, request.posy, request.text.as_slice());
+                Ok(Reply::DrawText(reply::DrawText {} ))
+            }
+
+            Request::DrawSprite(request) => {
+                self.platform.user_interface().draw_sprite(
+                    request.posx, request.posy, request.smap, request.index);
+                Ok(Reply::DrawSprite(reply::DrawSprite {} ))
+            }
+
             // _ => {
             //     // #[cfg(test)]
             //     // println!("todo: {:?} request!", &request);
