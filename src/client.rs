@@ -101,7 +101,7 @@ pub enum ClientError {
 pub type ClientResult<'c, T, C> = core::result::Result<FutureResult<'c, T, C>, ClientError>;
 
 /// All-in-one trait bounding on the sub-traits.
-pub trait Client: CertificateClient + CryptoClient + CounterClient + FilesystemClient + ManagementClient + UiClient {}
+pub trait Client: CertificateClient + CryptoClient + CounterClient + FilesystemClient + ManagementClient + UiClient + GuiClient {}
 
 impl<S: Syscall> Client for ClientImplementation<S> {}
 
@@ -241,6 +241,7 @@ impl<S: Syscall> CounterClient for ClientImplementation<S> {}
 impl<S: Syscall> FilesystemClient for ClientImplementation<S> {}
 impl<S: Syscall> ManagementClient for ClientImplementation<S> {}
 impl<S: Syscall> UiClient for ClientImplementation<S> {}
+impl<S: Syscall> GuiClient for ClientImplementation<S> {}
 
 /// Read/Write + Delete certificates
 pub trait CertificateClient: PollClient {
@@ -710,7 +711,7 @@ pub trait ManagementClient: PollClient {
 }
 
 
-/// User-interfacing functionality.
+/// Simple User-interfacing functionality.
 pub trait UiClient: PollClient {
 
     fn confirm_user_present(&mut self, timeout_milliseconds: u32)
@@ -731,6 +732,42 @@ pub trait UiClient: PollClient {
     }
 }
 
+
+/// Graphical user interface.
+pub trait GuiClient: PollClient {
+
+    fn draw_filled_rect(&mut self, x: u16, y: u16, w: u16, h: u16, col: u16)
+        -> ClientResult<'_, reply::DrawFilledRect, Self>
+    {
+        let r = self.request(request::DrawFilledRect {
+            posx: x, posy: y, width: w, height: h, color: col
+        } )?;
+        r.client.syscall();
+        Ok(r)
+    }
+
+    fn draw_text(&mut self, x: u16, y: u16, text: &[u8])
+        -> ClientResult<'_, reply::DrawText, Self>
+    {
+        let data = MediumData::from_slice(text).map_err(|_| ClientError::DataTooLarge)?;
+        let r = self.request(request::DrawText {
+            posx: x, posy: y, text: data
+        } )?;
+        r.client.syscall();
+        Ok(r)
+    }
+
+    fn draw_sprite(&mut self, x: u16, y: u16, smap: u16, index: u16)
+        -> ClientResult<'_, reply::DrawSprite, Self>
+    {
+        let r = self.request(request::DrawSprite {
+            posx: x, posy: y, smap, index
+        } )?;
+        r.client.syscall();
+        Ok(r)
+    }
+
+}
 
 // would be interesting to use proper futures, and something like
 // https://github.com/dflemstr/direct-executor/blob/master/src/lib.rs#L62-L66

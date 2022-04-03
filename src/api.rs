@@ -99,6 +99,14 @@ generate_enums! {
     ReadCertificate: 61
     WriteCertificate: 62
 
+    /////////
+    // GUI //
+    /////////
+
+    DrawFilledRect: 70
+    DrawText: 71
+    DrawSprite: 72
+
     ///////////////////
     // Backend Mgmt. //
     ///////////////////
@@ -336,6 +344,24 @@ pub mod request {
           - location: Location
           - der: Message
 
+        DrawFilledRect:
+          - posx: u16
+          - posy: u16
+          - width: u16
+          - height: u16
+          - color: u16
+
+        DrawText:
+          - posx: u16
+          - posy: u16
+          - text: MediumData
+
+        DrawSprite:
+          - posx: u16
+          - posy: u16
+          - smap: u16
+          - index: u16
+
         SetServiceBackends:
           - backends: Vec<ServiceBackends, 2>
     }
@@ -488,6 +514,12 @@ pub mod reply {
 
         WriteCertificate:
           - id: CertId
+
+        DrawFilledRect:
+
+        DrawText:
+
+        DrawSprite:
 
         SetServiceBackends:
 

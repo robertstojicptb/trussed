@@ -50,6 +50,13 @@ pub trait UserInterface {
     fn wink(&mut self, duration: core::time::Duration) {
         let _ = duration;
     }
+
+    fn draw_filled_rect(&mut self, x: u16, y: u16, w: u16, h: u16, col: u16) {}
+    fn draw_text(&mut self, x: u16, y: u16, text: &[u8]) {}
+    fn draw_sprite(&mut self, x: u16, y: u16, sprite_map: u16, index: u16) {}
+    fn get_gui_dimension(&self) -> Option<(u16, u16)> {
+        None
+    }
 }
 
 // This is the same trick as in "store.rs",
