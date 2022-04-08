@@ -581,6 +581,12 @@ impl<P: Platform> ServiceResources<P> {
                 Ok(Reply::DrawSprite(reply::DrawSprite {} ))
             }
 
+            Request::GUIControl(request) => {
+                match self.platform.user_interface().gui_control(request.command) {
+                    Some(resp) => { Ok(Reply::GUIControl(reply::GUIControl { response: resp } )) }
+                    None => { Err(Error::RequestNotAvailable) }
+                }
+            }
             // _ => {
             //     // #[cfg(test)]
             //     // println!("todo: {:?} request!", &request);

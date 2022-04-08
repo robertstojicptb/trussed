@@ -105,6 +105,7 @@ generate_enums! {
     DrawFilledRect: 70
     DrawText: 71
     DrawSprite: 72
+    GUIControl: 73
 
     ///////////
     // Other //
@@ -351,6 +352,9 @@ pub mod request {
           - posy: u16
           - smap: u16
           - index: u16
+
+        GUIControl:
+          - command: GUIControlCommand
     }
 }
 
@@ -505,6 +509,8 @@ pub mod reply {
 
         DrawSprite:
 
+        GUIControl:
+          - response: GUIControlResponse
     }
 
 }
