@@ -106,6 +106,7 @@ generate_enums! {
     DrawFilledRect: 70
     DrawText: 71
     DrawSprite: 72
+    GUIControl: 73
 
     ///////////////////
     // Backend Mgmt. //
@@ -362,6 +363,9 @@ pub mod request {
           - smap: u16
           - index: u16
 
+        GUIControl:
+          - command: GUIControlCommand
+
         SetServiceBackends:
           - backends: Vec<ServiceBackends, 2>
     }
@@ -521,8 +525,10 @@ pub mod reply {
 
         DrawSprite:
 
-        SetServiceBackends:
+        GUIControl:
+          - response: GUIControlResponse
 
+        SetServiceBackends:
     }
 
 }

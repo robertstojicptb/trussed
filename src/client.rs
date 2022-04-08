@@ -767,6 +767,15 @@ pub trait GuiClient: PollClient {
         Ok(r)
     }
 
+    fn gui_control(&mut self, cmd: GUIControlCommand)
+        -> ClientResult<'_, reply::GUIControl, Self>
+    {
+        let r = self.request(request::GUIControl {
+            command: cmd
+        } )?;
+        r.client.syscall();
+        Ok(r)
+    }
 }
 
 // would be interesting to use proper futures, and something like

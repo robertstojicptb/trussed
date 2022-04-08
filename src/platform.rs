@@ -9,7 +9,7 @@
 // pub use rand_core::{CryptoRng, RngCore};
 pub use rand_core::{CryptoRng, RngCore};
 pub use crate::store::Store;
-pub use crate::types::{ClientContext, consent, reboot, ui, ServiceBackends};
+pub use crate::types::{ClientContext, consent, reboot, ui, GUIControlCommand, GUIControlResponse, ServiceBackends};
 use crate::api::{Request, Reply};
 use crate::error::Error;
 
@@ -55,6 +55,9 @@ pub trait UserInterface {
     fn draw_text(&mut self, x: u16, y: u16, text: &[u8]) {}
     fn draw_sprite(&mut self, x: u16, y: u16, sprite_map: u16, index: u16) {}
     fn get_gui_dimension(&self) -> Option<(u16, u16)> {
+        None
+    }
+    fn gui_control(&mut self, cmd: GUIControlCommand) -> Option<GUIControlResponse> {
         None
     }
 }

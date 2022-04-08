@@ -601,3 +601,13 @@ pub enum SignatureSerialization {
 
 pub type UserAttribute = Bytes<MAX_USER_ATTRIBUTE_LENGTH>;
 
+#[derive(Copy, Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
+pub enum GUIControlCommand {
+    SetOrientation(u8),
+    Rotate(u8),
+}
+
+#[derive(Copy, Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
+pub enum GUIControlResponse {
+    Orientation(u8),
+}
