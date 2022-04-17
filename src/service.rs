@@ -586,6 +586,21 @@ impl<P: Platform> ServiceResources<P> {
                 }
             }
 
+            Request::UpdateButtonState(_request) => {
+                self.platform.user_interface().update_button_state();
+                Ok(Reply::UpdateButtonState(reply::UpdateButtonState {} ))
+            }
+
+            Request::GetButtonState(request) => {
+                match self.platform.user_interface().get_button_state(request.bitmap) {
+                    Some(resp) => {
+                        let b = ShortData::from_slice(&resp).unwrap();
+                        Ok(Reply::GetButtonState(reply::GetButtonState { states: b } ))
+                    }
+                    None => { Err(Error::RequestNotAvailable) }
+                }
+            }
+
             Request::SetServiceBackends(request) => {
                 /* as long as we don't do backend selection per syscall,
                    reject clients that want to drop the software backend;

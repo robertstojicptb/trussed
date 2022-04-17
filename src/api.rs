@@ -107,6 +107,8 @@ generate_enums! {
     DrawText: 71
     DrawSprite: 72
     GUIControl: 73
+    UpdateButtonState: 75
+    GetButtonState: 76
 
     ///////////////////
     // Backend Mgmt. //
@@ -366,6 +368,11 @@ pub mod request {
         GUIControl:
           - command: GUIControlCommand
 
+        UpdateButtonState:
+
+        GetButtonState:
+          - bitmap: u32
+
         SetServiceBackends:
           - backends: Vec<ServiceBackends, 2>
     }
@@ -528,7 +535,13 @@ pub mod reply {
         GUIControl:
           - response: GUIControlResponse
 
+        UpdateButtonState:
+
+        GetButtonState:
+          - states: ShortData
+
         SetServiceBackends:
+
     }
 
 }

@@ -51,13 +51,25 @@ pub trait UserInterface {
         let _ = duration;
     }
 
-    fn draw_filled_rect(&mut self, x: u16, y: u16, w: u16, h: u16, col: u16) {}
-    fn draw_text(&mut self, x: u16, y: u16, text: &[u8]) {}
-    fn draw_sprite(&mut self, x: u16, y: u16, sprite_map: u16, index: u16) {}
+    fn draw_filled_rect(&mut self, x: u16, y: u16, w: u16, h: u16, col: u16) {
+        let _ = x & y & w & h & col;
+    }
+    fn draw_text(&mut self, x: u16, y: u16, text: &[u8]) {
+        let _ = { if text.len() != 0 { x & y } else { x | y } };
+    }
+    fn draw_sprite(&mut self, x: u16, y: u16, sprite_map: u16, index: u16) {
+        let _ = x & y & sprite_map & index;
+    }
     fn get_gui_dimension(&self) -> Option<(u16, u16)> {
         None
     }
+    fn update_button_state(&mut self) {
+    }
+    fn get_button_state(&mut self, _bitmap: u32) -> Option<[u8; 8]> {
+        None
+    }
     fn gui_control(&mut self, cmd: GUIControlCommand) -> Option<GUIControlResponse> {
+        let _ = cmd;
         None
     }
 }
