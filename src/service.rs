@@ -587,6 +587,22 @@ impl<P: Platform> ServiceResources<P> {
                     None => { Err(Error::RequestNotAvailable) }
                 }
             }
+
+            Request::UpdateButtonState(_request) => {
+                self.platform.user_interface().update_button_state();
+                Ok(Reply::UpdateButtonState(reply::UpdateButtonState {} ))
+            }
+
+            Request::GetButtonState(request) => {
+                match self.platform.user_interface().get_button_state(request.bitmap) {
+                    Some(resp) => {
+                        let b = ShortData::from_slice(&resp).unwrap();
+                        Ok(Reply::GetButtonState(reply::GetButtonState { states: b } ))
+                    }
+                    None => { Err(Error::RequestNotAvailable) }
+                }
+            }
+
             // _ => {
             //     // #[cfg(test)]
             //     // println!("todo: {:?} request!", &request);

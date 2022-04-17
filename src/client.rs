@@ -755,6 +755,22 @@ pub trait GuiClient: PollClient {
         r.client.syscall();
         Ok(r)
     }
+
+    fn update_button_state(&mut self)
+        -> ClientResult<'_, reply::UpdateButtonState, Self>
+    {
+        let r = self.request(request::UpdateButtonState {} )?;
+        r.client.syscall();
+        Ok(r)
+    }
+
+    fn get_button_state(&mut self, bitmap: u32)
+        -> ClientResult<'_, reply::GetButtonState, Self>
+    {
+        let r = self.request(request::GetButtonState { bitmap } )?;
+        r.client.syscall();
+        Ok(r)
+    }
 }
 
 // would be interesting to use proper futures, and something like
