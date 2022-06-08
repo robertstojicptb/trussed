@@ -214,6 +214,7 @@ pub mod consent {
         Interrupted,
         TimedOut,
         TimeoutNotImplemented,
+	Declined,
     }
 
     pub type Result = core::result::Result<(), Error>;
