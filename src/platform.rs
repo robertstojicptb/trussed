@@ -72,6 +72,11 @@ pub trait UserInterface {
         let _ = cmd;
         None
     }
+
+    fn check_gui_user_presence(&mut self, message: &[u8]) -> Result<consent::Level, consent::Error> {
+	let _ = message;
+	Ok(consent::Level::None)
+    }
 }
 
 // This is the same trick as in "store.rs",

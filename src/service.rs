@@ -601,6 +601,44 @@ impl<P: Platform> ServiceResources<P> {
                 }
             }
 
+            Request::RequestGUIUserConsent(request) => {
+                // assert_eq!(request.level, consent::Level::Normal);
+
+                let previous_status = self.platform.user_interface().status();
+		let message = request.message.as_slice();
+
+                self.platform.user_interface().set_status(ui::Status::WaitingForUserPresence);
+		let mut up_result;
+                loop {
+                    self.platform.user_interface().refresh();
+                    up_result = self.platform.user_interface().check_gui_user_presence(message);
+		    if up_result.is_err() { break; }
+		    let up = up_result.unwrap();
+                    match request.level {
+                        // If Normal level consent is request, then both Strong and Normal
+                        // indications will result in success.
+                        consent::Level::Normal => {
+                            if up == consent::Level::Normal ||
+                                up == consent::Level::Strong {
+                                    break;
+                                }
+                        },
+                        // Otherwise, only strong level indication will work.
+                        consent::Level::Strong => {
+                            if up == consent::Level::Strong {
+                                break;
+                            }
+                        }
+                        _ => {
+                            break;
+                        }
+                    }
+                }
+                self.platform.user_interface().set_status(previous_status);
+
+                Ok(Reply::RequestGUIUserConsent(reply::RequestGUIUserConsent { result: up_result.map(|_| ()) } ))
+            }
+
             Request::SetServiceBackends(request) => {
                 /* as long as we don't do backend selection per syscall,
                    reject clients that want to drop the software backend;

@@ -792,6 +792,18 @@ pub trait GuiClient: PollClient {
         r.client.syscall();
         Ok(r)
     }
+
+    fn confirm_gui_user_present(&mut self, message: &[u8])
+        -> ClientResult<'_, reply::RequestGUIUserConsent, Self>
+    {
+        let data = MediumData::from_slice(message).map_err(|_| ClientError::DataTooLarge)?;
+        let r = self.request(request::RequestGUIUserConsent {
+            level: consent::Level::Normal,
+	    message: data,
+        } )?;
+        r.client.syscall();
+        Ok(r)
+    }
 }
 
 // would be interesting to use proper futures, and something like

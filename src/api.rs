@@ -109,6 +109,7 @@ generate_enums! {
     GUIControl: 73
     UpdateButtonState: 75
     GetButtonState: 76
+    RequestGUIUserConsent: 77
 
     ///////////////////
     // Backend Mgmt. //
@@ -373,6 +374,10 @@ pub mod request {
         GetButtonState:
           - bitmap: u32
 
+        RequestGUIUserConsent:
+          - level: consent::Level
+          - message: MediumData
+
         SetServiceBackends:
           - backends: Vec<ServiceBackends, 2>
     }
@@ -539,6 +544,9 @@ pub mod reply {
 
         GetButtonState:
           - states: ShortData
+
+        RequestGUIUserConsent:
+            - result: consent::Result
 
         SetServiceBackends:
 
