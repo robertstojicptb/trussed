@@ -1425,7 +1425,7 @@
                 }
             }
 
-            <span class="ident">Request::UpdateButtonState</span>(<span class="ident">request</span>) =&gt; {
+            <span class="ident">Request::UpdateButtonState</span>(<span class="ident">_request</span>) =&gt; {
                 <span class="self">self</span>.<span class="ident">platform</span>.<span class="ident">user_interface</span>().<span class="ident">update_button_state</span>();
                 <span class="prelude-val">Ok</span>(<span class="ident">Reply::UpdateButtonState</span>(<span class="ident">reply::UpdateButtonState</span> {} ))
             }
