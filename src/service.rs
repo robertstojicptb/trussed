@@ -800,7 +800,14 @@ impl<P: Platform> Service<P> {
                 // #[cfg(test)] println!("service got request: {:?}", &request);
 
                 // resources.currently_serving = ep.client_id.clone();
-                let reply_result = resources.reply_to(&mut ep.client_id, &request);
+
+                let mut reply_result = Err(Error::RequestNotAvailable);
+                for backend in ep.client_id.backends.clone() {
+                    reply_result = match backend {
+                        ServiceBackends::Software => { resources.reply_to(&mut ep.client_id, &request) }
+                    };
+                    if reply_result != Err(Error::RequestNotAvailable) { break; }
+                };
 
                 resources.platform.user_interface().set_status(ui::Status::Idle);
                 ep.interchange.respond(&reply_result).ok();
