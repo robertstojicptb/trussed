@@ -9,9 +9,9 @@
 // pub use rand_core::{CryptoRng, RngCore};
 pub use rand_core::{CryptoRng, RngCore};
 pub use crate::store::Store;
-pub use crate::types::{ui, reboot};
-pub use crate::types::consent;
-
+pub use crate::types::{ClientContext, consent, reboot, ui, ServiceBackends};
+use crate::api::{Request, Reply};
+use crate::error::Error;
 
 pub trait UserInterface {
     /// Check if the user has indicated their presence so as to give
@@ -64,6 +64,7 @@ pub unsafe trait Platform {
     fn rng(&mut self) -> &mut Self::R;
     fn store(&self) -> Self::S;
     fn user_interface(&mut self) -> &mut Self::UI;
+    fn platform_reply_to(&mut self, backend_id: ServiceBackends, client_id: &mut ClientContext, request: &Request) -> Result<Reply, Error>;
 }
 
 #[macro_export]
@@ -72,6 +73,7 @@ macro_rules! platform { (
     R: $Rng:ty,
     S: $Store:ty,
     UI: $UserInterface:ty,
+    $($BackendID:pat, $BackendName:ident, $BackendType:ty),*
 ) => {
 
     /// Platform struct implemented `trussed::Platform`, generated
@@ -81,11 +83,12 @@ macro_rules! platform { (
         rng: $Rng,
         store: $Store,
         user_interface: $UserInterface,
+        $($BackendName: $BackendType),*
     }
 
     impl $PlatformName {
-        pub fn new(rng: $Rng, store: $Store, user_interface: $UserInterface) -> Self {
-            Self { rng, store, user_interface }
+        pub fn new(rng: $Rng, store: $Store, user_interface: $UserInterface, $($BackendName: $BackendType),*) -> Self {
+            Self { rng, store, user_interface, $($BackendName),* }
         }
     }
 
@@ -105,6 +108,14 @@ macro_rules! platform { (
         fn store(&self) -> Self::S {
             self.store
         }
+
+        fn platform_reply_to(&mut self, backend_id: $crate::types::ServiceBackends, client_id: &mut $crate::types::ClientContext, request: &$crate::api::Request) -> Result<$crate::api::Reply, $crate::error::Error> {
+            $(if let $BackendID = backend_id {
+                let b: &mut dyn $crate::types::ServiceBackend = &mut self.$BackendName;
+                return b.reply_to(client_id, request);
+            } );*
+            return Err($crate::error::Error::RequestNotAvailable);
+        }
     }
 }}
 
@@ -113,4 +124,3 @@ macro_rules! platform { (
 pub trait Syscall {
     fn syscall(&mut self);
 }
-
