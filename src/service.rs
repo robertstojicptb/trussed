@@ -789,6 +789,7 @@ impl<P: Platform> Service<P> {
     }
 
     // process one request per client which has any
+    #[allow(unreachable_patterns)]
     pub fn process(&mut self) {
         // split self since we iter-mut over eps and need &mut of the other resources
         let eps = &mut self.eps;
@@ -804,7 +805,8 @@ impl<P: Platform> Service<P> {
                 let mut reply_result = Err(Error::RequestNotAvailable);
                 for backend in ep.client_id.backends.clone() {
                     reply_result = match backend {
-                        ServiceBackends::Software => { resources.reply_to(&mut ep.client_id, &request) }
+                        ServiceBackends::Software => { resources.reply_to(&mut ep.client_id, &request) },
+                        sb => { resources.platform.platform_reply_to(sb, &mut ep.client_id, &request) }
                     };
                     if reply_result != Err(Error::RequestNotAvailable) { break; }
                 };
