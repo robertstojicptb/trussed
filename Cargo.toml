@@ -50,6 +50,9 @@ serde-indexed = "0.1.0"
 # virtual
 once_cell = { version = "1.13.0", optional = true }
 
+# hardware service backends
+se050 = { git = "https://github.com/jnordholz/se050", optional = true }
+
 [dev-dependencies]
 # Testing
 serial_test = { version = "0.6" }
@@ -104,6 +107,8 @@ sha256 = []
 tdes = ["des"]
 totp = ["sha-1"]
 trng = ["sha-1"]
+
+backend-se050 = ["se050"]
 
 clients-1 = []
 clients-2 = []

@@ -21,6 +21,8 @@ pub use crate::store::{
 use crate::types::*;
 pub use crate::pipe::ServiceEndpoint;
 
+#[cfg(feature = "backend-se050")]
+pub mod backend_se050;
 
 pub mod attest;
 

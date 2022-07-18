@@ -290,7 +290,8 @@ selection and ordering the calling client has specified in its ClientId.
 #[derive(Copy, Clone, PartialEq, Eq, Debug, serde::Serialize, serde::Deserialize)]
 pub enum ServiceBackends {
     Software,
-    // SE050(Se050Parameters),
+#[cfg(feature = "backend-se050")]
+    SE050(crate::service::backend_se050::Se050Parameters),
 }
 
 /**
