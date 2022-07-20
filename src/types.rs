@@ -287,7 +287,7 @@ added as payload for that enum variant.
 Backends are called from Service::process() under consideration of the
 selection and ordering the calling client has specified in its ClientId.
 */
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug, serde::Serialize, serde::Deserialize)]
 pub enum ServiceBackends {
     Software,
     // SE050(Se050Parameters),
