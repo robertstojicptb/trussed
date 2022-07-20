@@ -635,6 +635,12 @@ impl<P: Platform> ServiceResources<P> {
                 Ok(Reply::RequestGUIUserConsent(reply::RequestGUIUserConsent { result: up_result.map(|_| ()) } ))
             }
 
+            Request::SetServiceBackends(request) => {
+                client_id.backends.clear();
+                client_id.backends.extend_from_slice(&request.backends);
+                Ok(Reply::SetServiceBackends(reply::SetServiceBackends {}))
+            }
+
             // _ => {
             //     // #[cfg(test)]
             //     // println!("todo: {:?} request!", &request);

@@ -110,6 +110,11 @@ generate_enums! {
     GetButtonState: 76
     RequestGUIUserConsent: 77
 
+    ///////////////////
+    // Backend Mgmt. //
+    ///////////////////
+    SetServiceBackends: 90
+
     ///////////
     // Other //
     ///////////
@@ -368,6 +373,8 @@ pub mod request {
           - level: consent::Level
           - message: MediumData
 
+        SetServiceBackends:
+          - backends: Vec<ServiceBackends, 2>
     }
 }
 
@@ -532,6 +539,9 @@ pub mod reply {
 
         RequestGUIUserConsent:
             - result: consent::Result
+
+        SetServiceBackends:
+
     }
 
 }

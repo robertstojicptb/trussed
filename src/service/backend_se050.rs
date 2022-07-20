@@ -8,7 +8,7 @@ pub struct Se050Wrapper {
     pub delay: &'static mut se050::DelayWrapper,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug, serde::Serialize, serde::Deserialize)]
 pub struct Se050Parameters {
     // pub pin: Option<[u8; MAX_PIN_LENGTH]>,
 }
