@@ -644,6 +644,21 @@ impl<P: Platform> ServiceResources<P> {
                 Ok(Reply::SetServiceBackends(reply::SetServiceBackends {}))
             }
 
+            Request::SetContext(request) => {
+                if request.pin.len() > MAX_PIN_LENGTH {
+                    return Err(Error::InternalError);
+                }
+		client_id.context = request.context;
+		client_id.pin.clear();
+		client_id.pin.extend_from_slice(&request.pin);
+                Ok(Reply::SetContext(reply::SetContext {}))
+            }
+
+            Request::SetCreationPolicy(request) => {
+		client_id.creation_policy = request.policy;
+                Ok(Reply::SetCreationPolicy(reply::SetCreationPolicy {}))
+            }
+
             // _ => {
             //     // #[cfg(test)]
             //     // println!("todo: {:?} request!", &request);

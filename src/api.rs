@@ -114,6 +114,8 @@ generate_enums! {
     // Backend Mgmt. //
     ///////////////////
     SetServiceBackends: 90
+    SetContext: 91
+    SetCreationPolicy: 92
 
     ///////////
     // Other //
@@ -375,6 +377,13 @@ pub mod request {
 
         SetServiceBackends:
           - backends: Vec<ServiceBackends, 2>
+
+        SetContext:
+          - context: ContextID
+          - pin: PinData
+
+        SetCreationPolicy:
+          - policy: Policy
     }
 }
 
@@ -541,6 +550,10 @@ pub mod reply {
             - result: consent::Result
 
         SetServiceBackends:
+
+        SetContext:
+
+        SetCreationPolicy:
 
     }
 
