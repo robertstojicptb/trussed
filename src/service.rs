@@ -636,6 +636,9 @@ impl<P: Platform> ServiceResources<P> {
             }
 
             Request::SetServiceBackends(request) => {
+                if request.backends.len() == 0 {
+                    return Err(Error::InternalError);
+                }
                 client_id.backends.clear();
                 client_id.backends.extend_from_slice(&request.backends);
                 Ok(Reply::SetServiceBackends(reply::SetServiceBackends {}))
