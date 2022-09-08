@@ -64,7 +64,9 @@ pub unsafe trait Platform {
     fn rng(&mut self) -> &mut Self::R;
     fn store(&self) -> Self::S;
     fn user_interface(&mut self) -> &mut Self::UI;
-    fn platform_reply_to(&mut self, backend_id: ServiceBackends, client_id: &mut ClientContext, request: &Request) -> Result<Reply, Error>;
+    fn platform_reply_to(&mut self, _backend_id: ServiceBackends, _client_id: &mut ClientContext, _request: &Request) -> Result<Reply, Error> {
+        Err(Error::RequestNotAvailable)
+    }
 }
 
 #[macro_export]
@@ -109,6 +111,7 @@ macro_rules! platform { (
             self.store
         }
 
+        #[allow(unused)]
         fn platform_reply_to(&mut self, backend_id: $crate::types::ServiceBackends, client_id: &mut $crate::types::ClientContext, request: &$crate::api::Request) -> Result<$crate::api::Reply, $crate::error::Error> {
             $(if let $BackendID = backend_id {
                 let b: &mut dyn $crate::types::ServiceBackend = &mut self.$BackendName;
