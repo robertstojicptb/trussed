@@ -607,6 +607,7 @@ pub type UserAttribute = Bytes<MAX_USER_ATTRIBUTE_LENGTH>;
 pub enum GUIControlCommand {
     SetOrientation(u8),
     Rotate(u8),
+    PowerOff,
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Serialize, Deserialize)]
