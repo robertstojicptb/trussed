@@ -60,7 +60,7 @@ impl ServiceBackend for Se050Wrapper {
 			match request.mechanism {
 			Mechanism::Aes256Cbc => {
 				let objid = self.device.write_aes_key(key2, self.delay  ).unwrap();
-				Ok(Reply::GenerateKey(reply::GenerateKey { key2: KeyId(objid.into()) }))
+				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
 			}
 			_ => { Err(Error::RequestNotAvailable) }
 			}
