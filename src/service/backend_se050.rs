@@ -18,7 +18,7 @@ pub struct Se050Parameters {
 impl ServiceBackend for Se050Wrapper {
 	fn reply_to(&mut self, _client_id: &mut ClientContext, request: &Request) -> Result<Reply> {
 
-		 let key : u8= 123456789;
+		 let key2 : u8= 123456789;
 		
 		match request {
 
@@ -59,8 +59,8 @@ impl ServiceBackend for Se050Wrapper {
 		Request::GenerateKey(request) => {
 			match request.mechanism {
 			Mechanism::Aes256Cbc => {
-				let objid = self.device.write_aes_key(&key, self.delay  ).unwrap();
-				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+				let objid = self.device.write_aes_key(key2, self.delay  ).unwrap();
+				Ok(Reply::GenerateKey(reply::GenerateKey { key2: KeyId(objid.into()) }))
 			}
 			_ => { Err(Error::RequestNotAvailable) }
 			}
