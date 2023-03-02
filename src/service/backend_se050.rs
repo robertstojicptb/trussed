@@ -18,7 +18,7 @@ pub struct Se050Parameters {
 impl ServiceBackend for Se050Wrapper {
 	fn reply_to(&mut self, _client_id: &mut ClientContext, request: &Request) -> Result<Reply> {
 
-		 let key2 : u8= 123456789;
+		 let key2 : u8= [123456789];
 		
 		match request {
 
