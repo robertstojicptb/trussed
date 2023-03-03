@@ -76,7 +76,8 @@ impl ServiceBackend for Se050Wrapper {
 			match request.mechanism {
 			Mechanism::P256 => {
 				let result = self.device.check_object_exists_p256(self.delay).unwrap();
-				Ok(Reply::Exists(reply::Exists { exists }))
+			//	Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+				Ok(Reply::Exists(reply::Exists (  exists )))
 			}
 			_ => { Err(Error::RequestNotAvailable) }
 			}
