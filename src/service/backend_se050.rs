@@ -78,7 +78,7 @@ impl ServiceBackend for Se050Wrapper {
 				let result = self.device.check_object_exists_p256(self.delay).unwrap();
 			//	Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 			//Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
-			Ok(Reply::External(reply::Exists { exists }))
+			Ok(Reply::Exists(reply::Exists { exists }))
 			}
 			_ => { Err(Error::RequestNotAvailable) }
 			}
