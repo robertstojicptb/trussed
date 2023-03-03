@@ -55,6 +55,38 @@ impl ServiceBackend for Se050Wrapper {
 		},
  
 
+		//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
+
+		Request::GenerateKey(request) => {
+			match request.mechanism {
+			Mechanism::Ed255 => {
+				let objid = self.device.generate_ed255_key_pair(self.delay).unwrap();
+				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+			}
+			_ => { Err(Error::RequestNotAvailable) }
+			}
+		},
+		//EXIST
+		//fn generate_p256_key(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ;
+		// /fn check_object_exists_p256(&mut self,   delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error>;
+      
+
+
+		Request::Exists(request) => {
+			match request.mechanism {
+			Mechanism::P256 => {
+				let result = self.device.check_object_exists_p256(self.delay).unwrap();
+				Ok(Reply::Exists(reply::Exists { exists: bool(result.into()) }))
+			}
+			_ => { Err(Error::RequestNotAvailable) }
+			}
+		},
+
+
+
+
+
+/*  //Mus in trussed noch implementiert werden
 		//fn generate_aes_key(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error>;
 
 
@@ -67,6 +99,31 @@ impl ServiceBackend for Se050Wrapper {
 			_ => { Err(Error::RequestNotAvailable) }
 			}
 		},
+
+*/
+
+
+
+/*  //Mus in trussed noch implementiert werden
+		//fn generate_aes_key(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error>;
+
+
+		Request::GenerateKey(request) => {
+			match request.mechanism {
+			Mechanism::Aes256Cbc => {
+				let objid = self.device.generate_aes_key(self.delay).unwrap();
+				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+			}
+			_ => { Err(Error::RequestNotAvailable) }
+			}
+		},
+
+*/
+
+
+
+
+
 
 
 

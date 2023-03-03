@@ -222,6 +222,7 @@ impl<P: Platform> ServiceResources<P> {
                     Mechanism::Ed255 => mechanisms::Ed255::generate_key(keystore, request),
                     Mechanism::P256 => mechanisms::P256::generate_key(keystore, request),
                     Mechanism::X255 => mechanisms::X255::generate_key(keystore, request),
+                  
                     _ => Err(Error::MechanismNotAvailable),
                 }.map(Reply::GenerateKey)
             },
