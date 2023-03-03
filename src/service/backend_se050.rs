@@ -54,6 +54,23 @@ impl ServiceBackend for Se050Wrapper {
 			}
 		},
  
+
+		//fn generate_aes_key(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error>;
+
+
+		Request::GenerateKey(request) => {
+			match request.mechanism {
+			Mechanism::P256 => {
+				let objid = self.device.generate_aes_key(self.delay).unwrap();
+				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+			}
+			_ => { Err(Error::RequestNotAvailable) }
+			}
+		},
+
+
+
+
 		_ => {
 			Err(Error::RequestNotAvailable)
 		}
