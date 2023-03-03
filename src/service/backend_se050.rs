@@ -60,7 +60,7 @@ impl ServiceBackend for Se050Wrapper {
 
 		Request::GenerateKey(request) => {
 			match request.mechanism {
-			Mechanism::P256 => {
+			Mechanism::Aes256Cbc => {
 				let objid = self.device.generate_aes_key(self.delay).unwrap();
 				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
 			}
