@@ -128,7 +128,7 @@ Exists:
 
 
 
-
+/* 
 		Request::Exists(request) => {
 			match request.mechanism {
 			Mechanism::P256 => {
@@ -149,7 +149,7 @@ Exists:
 			_ => { Err(Error::RequestNotAvailable) }
 			}
 		},
-
+*/
 
 
  
