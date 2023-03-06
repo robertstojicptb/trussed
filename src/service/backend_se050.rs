@@ -67,6 +67,34 @@ impl ServiceBackend for Se050Wrapper {
 			_ => { Err(Error::RequestNotAvailable) }
 			}
 		},
+
+		Request::Exists(request) => {
+			match request.mechanism {
+			Mechanism::P256 => {
+				let result = self.device.check_object_exists_p256(self.delay).unwrap();
+
+		Ok(Reply::Exists(reply::Exists { exists } ))
+		//Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+	}
+	_ => { Err(Error::RequestNotAvailable) }
+	}
+},
+
+
+/*  
+		Exists:
+		- exists: bool
+
+	GenerateKey:
+		- key: KeyId
+
+		 RandomBytes:
+            - bytes: Message
+
+*/
+
+
+
 		//EXIST
 		//fn generate_p256_key(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ;
 		// /fn check_object_exists_p256(&mut self,   delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error>;
