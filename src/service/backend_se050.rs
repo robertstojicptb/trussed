@@ -110,10 +110,12 @@ Exists:
 					Ok(Reply::Exists(reply::Exists { exists :true }))
 					 
 				} 
-				else  result == 0x02
+				else  if result == 0x02
 				{
 					Ok(Reply::Exists(reply::Exists { exists :false }))
 				}
+
+				else{}
 				
 			}
 			_ => { Err(Error::RequestNotAvailable) }
