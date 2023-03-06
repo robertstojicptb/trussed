@@ -18,7 +18,8 @@ pub struct Se050Parameters {
 impl ServiceBackend for Se050Wrapper {
 	fn reply_to(&mut self, _client_id: &mut ClientContext, request: &Request) -> Result<Reply> {
 
-		
+		let RESULT_SUCCESS = 0x01;
+		let RESULT_FAILURE = 0x02;
 		
 		match request {
 
@@ -71,18 +72,94 @@ impl ServiceBackend for Se050Wrapper {
 		// /fn check_object_exists_p256(&mut self,   delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error>;
       
 
+/* 
+		4.3.27 Result
+		Table 44. Result constants
+		Name Value
+		RESULT_SUCCESS 0x01
+		RESULT_FAILURE 0x02
+*/
 
+/*
+Exists:
+- mechanism: Mechanism
+- key: KeyId
+*/
+ 
+
+			//	Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+			//Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+
+//compare result  to RESULT_SUCCESS 0x01 		RESULT_FAILURE 0x02
+//then result in bool
+
+ 
+
+
+
+
+
+
+
+		Request::Exists(request) => {
+			match request.mechanism {
+			Mechanism::P256 => {
+				let result = self.device.check_object_exists_p256(self.delay).unwrap();
+
+				if result == 0x01 {
+					Ok(Reply::Exists(reply::Exists { exists :true }))
+					 
+				} 
+				else if result == 0x02
+				{
+					Ok(Reply::Exists(reply::Exists { exists :false }))
+				}
+				
+			}
+			_ => { Err(Error::RequestNotAvailable) }
+			}
+		},
+
+
+
+ 
+
+
+
+			 
+			
+
+
+ 
+
+/*
 		Request::Exists(request) => {
 			match request.mechanism {
 			Mechanism::P256 => {
 				let result = self.device.check_object_exists_p256(self.delay).unwrap();
 			//	Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 			//Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+
+//compare result  to RESULT_SUCCESS 0x01 		RESULT_FAILURE 0x02
+//then result in bool
 			Ok(Reply::Exists(reply::Exists { exists :bool }))
 			}
 			_ => { Err(Error::RequestNotAvailable) }
 			}
 		},
+
+
+ */
+
+
+
+
+
+
+
+
+
+
 
 
 
