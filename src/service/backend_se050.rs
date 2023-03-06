@@ -110,7 +110,7 @@ Exists:
 					Ok(Reply::Exists(reply::Exists { exists :true }))
 					 
 				} 
-				else if result == 0x02
+				else  result == 0x02
 				{
 					Ok(Reply::Exists(reply::Exists { exists :false }))
 				}
