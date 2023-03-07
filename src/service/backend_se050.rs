@@ -64,7 +64,7 @@ impl ServiceBackend for Se050Wrapper {
 				
 				let mut buf : u8 = 32;
 
-				let result = self.device.check_object_exists_p256( &mut buf, self.delay).unwrap();
+				let result = self.device.check_object_exists_p256( &mut [buf], self.delay).unwrap();
 				Ok(Reply::Exists(reply::Exists { exists: result  }))
 			}
 			_ => { Err(Error::RequestNotAvailable) }
