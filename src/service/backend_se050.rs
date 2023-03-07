@@ -58,16 +58,30 @@ impl ServiceBackend for Se050Wrapper {
 
 		//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
 
-		Request::GenerateKey(request) => {
+		Request::Exists(request) => {
 			match request.mechanism {
-			Mechanism::Ed255 => {
-				let objid = self.device.generate_ed255_key_pair(self.delay).unwrap();
-				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+			Mechanism::P256 => {
+				let result = self.device.check_object_exists_p256(self.delay).unwrap();
+				Ok(Reply::Exists(reply::Exists { exists: bool (result.unwrap() ) }))
 			}
 			_ => { Err(Error::RequestNotAvailable) }
 			}
 		},
 
+
+		/*
+		
+		   Exists:
+          - mechanism: Mechanism
+          - key: KeyId
+
+
+ Exists:
+            - exists: bool
+
+
+		 */
+/* 
 		Request::Exists(request) => {
 			match request.mechanism {
 			Mechanism::P256 => {
@@ -80,7 +94,7 @@ impl ServiceBackend for Se050Wrapper {
 	}
 },
 
-
+*/
 /*  
 		Exists:
 		- exists: bool
