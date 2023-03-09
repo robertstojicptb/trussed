@@ -401,6 +401,7 @@ pub trait CryptoClient: PollClient {
             attributes,
         })?;
         r.client.syscall();
+        trace!("xxxxxx");
         Ok(r)
     }
 
@@ -428,6 +429,7 @@ pub trait CryptoClient: PollClient {
     {
         let r = self.request(request::RandomBytes { count } )?;
         r.client.syscall();
+        trace!("xxxxxx");
         Ok(r)
     }
 
