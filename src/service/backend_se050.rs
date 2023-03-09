@@ -32,7 +32,7 @@ impl ServiceBackend for Se050Wrapper {
 		}.map(Reply::Encrypt),
 
 //#######################################################################################################################
-
+/*  
 		//fn get_random(&mut self, buf: &mut [u8], delay: &mut DelayWrapper) -> Result<(), Se050Error>
 
 		Request::RandomBytes(request) => {
@@ -47,7 +47,7 @@ impl ServiceBackend for Se050Wrapper {
 				Err(Error::RequestNotAvailable)
 			}
 		},
-
+*/
 //#######################################################################################################################
 /* 
 		//fn generate_p256_key (&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ;
