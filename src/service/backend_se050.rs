@@ -30,6 +30,8 @@ impl ServiceBackend for Se050Wrapper {
 			}
 		}.map(Reply::Encrypt),
 
+//#######################################################################################################################
+
 		//fn get_random(&mut self, buf: &mut [u8], delay: &mut DelayWrapper) -> Result<(), Se050Error>
 
 		Request::RandomBytes(request) => {
@@ -43,7 +45,9 @@ impl ServiceBackend for Se050Wrapper {
 			}
 		},
 
-		//fn generate_p256_key(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ;
+//#######################################################################################################################
+
+		//fn generate_p256_key (&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ;
 
 		Request::GenerateKey(request) => {
 			match request.mechanism {
@@ -54,15 +58,43 @@ impl ServiceBackend for Se050Wrapper {
 			_ => { Err(Error::RequestNotAvailable) }
 			}
 		},
- 
+  
+//#######################################################################################################################
 
+			//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
+
+			Request::GenerateKey(request) => {
+				match request.mechanism {
+				Mechanism::Ed255 => {
+					let objid = self.device.generate_ed255_key_pair(self.delay).unwrap();
+					Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+				}
+				_ => { Err(Error::RequestNotAvailable) }
+				}
+			},
+//#######################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*  
 		//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
 
 		Request::Exists(request) => {
 			match request.mechanism {
 			Mechanism::P256 => {
-				
-			  let mut buf : u8 = 32;
+
+				//let mut buf : u8 = 8;
+			  let mut buf : u8 = 0x00;
 			 //let mut buf : u8  ;
 
 				let result = self.device.check_object_exists_p256( &mut [buf], self.delay).unwrap();
@@ -76,7 +108,7 @@ impl ServiceBackend for Se050Wrapper {
 			}
 		},
 
-
+*/
 		/*
 		
 		   Exists:

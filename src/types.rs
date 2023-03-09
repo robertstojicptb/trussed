@@ -278,13 +278,11 @@ This enum collects the available "system call" service backends.
 Each of these backends is supposed to be self-sufficient (i.e. not reliant
 on another one or on ServiceResources itself) and to implement a subset
 of the API calls.
-
 If a backend requires ownership of a device, that device will be part of
 the customizable part of the macro-constructed Platform struct. If a
 backend further requires parametrization from the client to operate (such as
 a PIN being passed down from an app), this parameter struct should be
 added as payload for that enum variant.
-
 Backends are called from Service::process() under consideration of the
 selection and ordering the calling client has specified in its ClientId.
 */
