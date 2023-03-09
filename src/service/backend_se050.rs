@@ -24,6 +24,7 @@ impl ServiceBackend for Se050Wrapper {
 		match request {
 
 		Request::Encrypt(request) => {
+
 			match request.mechanism {
 			Mechanism::Aes256Cbc => { aes_encrypt() },
 			_ => { Err(Error::RequestNotAvailable) }
@@ -39,7 +40,9 @@ impl ServiceBackend for Se050Wrapper {
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
 				self.device.get_random(&mut bytes, self.delay).unwrap();
+				trace!("xxxxxx");
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+				
 			} else {
 				Err(Error::RequestNotAvailable)
 			}
