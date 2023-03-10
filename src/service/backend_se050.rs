@@ -24,7 +24,7 @@ impl ServiceBackend for Se050Wrapper {
 		let RESULT_FAILURE = 0x02;
 		
 		match request {
-
+/*  
 		Request::Encrypt(request) => {
 
 			match request.mechanism {
@@ -32,7 +32,7 @@ impl ServiceBackend for Se050Wrapper {
 			_ => { Err(Error::RequestNotAvailable) }
 			}
 		}.map(Reply::Encrypt),
-
+*/
 //#######################################################################################################################
 /* */
 		//fn get_random(&mut self, buf: &mut [u8], delay: &mut DelayWrapper) -> Result<(), Se050Error>
