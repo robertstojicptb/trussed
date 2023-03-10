@@ -10,14 +10,16 @@ pub struct Se050Wrapper {
     pub delay: &'static mut se050::DelayWrapper,
 }
 
+
 #[derive(Copy, Clone, PartialEq, Eq, Debug, serde::Serialize, serde::Deserialize)]
 pub struct Se050Parameters {
     // pub pin: Option<[u8; MAX_PIN_LENGTH]>,
 }
 
 impl ServiceBackend for Se050Wrapper {
-	fn reply_to(&mut self, _client_id: &mut ClientContext, request: &Request) -> Result<Reply> {
 
+	fn reply_to(&mut self, _client_id: &mut ClientContext, request: &Request) -> Result<Reply> {
+		
 		let RESULT_SUCCESS = 0x01;
 		let RESULT_FAILURE = 0x02;
 		
@@ -32,7 +34,7 @@ impl ServiceBackend for Se050Wrapper {
 		}.map(Reply::Encrypt),
 
 //#######################################################################################################################
-/*  
+/* */
 		//fn get_random(&mut self, buf: &mut [u8], delay: &mut DelayWrapper) -> Result<(), Se050Error>
 
 		Request::RandomBytes(request) => {
@@ -47,9 +49,9 @@ impl ServiceBackend for Se050Wrapper {
 				Err(Error::RequestNotAvailable)
 			}
 		},
-*/
+
 //#######################################################################################################################
-/* 
+ 
 		//fn generate_p256_key (&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ;
 
 		Request::GenerateKey(request) => {
@@ -78,7 +80,7 @@ impl ServiceBackend for Se050Wrapper {
 //#######################################################################################################################
 
 
-*/
+ 
 
 
 
