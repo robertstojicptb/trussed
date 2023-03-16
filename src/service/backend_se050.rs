@@ -14,7 +14,7 @@ pub struct Se050Wrapper {
 pub struct Se050Parameters {
     // pub pin: Option<[u8; MAX_PIN_LENGTH]>,
 }
-/*  
+ 
 impl ServiceBackend for Se050Wrapper {
 
 	fn reply_to(&mut self, _client_id: &mut ClientContext, request: &Request) -> Result<Reply> {
@@ -30,7 +30,7 @@ impl ServiceBackend for Se050Wrapper {
 
 
 //#######################################################################################################################
-/* */
+  
 		//fn get_random(&mut self, buf: &mut [u8], delay: &mut DelayWrapper) -> Result<(), Se050Error>
 
 		Request::RandomBytes(request) => {
@@ -122,8 +122,8 @@ impl TryFrom<Id> for se050::ObjectId {
 }
 //bla bla
 
-*/
-
+ 
+/*  
 impl ServiceBackend for Se050Wrapper {
 
 	fn reply_to(&mut self, _client_id: &mut ClientContext, request: &Request) -> Result<Reply> {
@@ -159,7 +159,7 @@ impl ServiceBackend for Se050Wrapper {
 			}
 
 			_ => { Err(Error::RequestNotAvailable) }
-			
+
 			}
 		},
 
@@ -171,3 +171,4 @@ impl ServiceBackend for Se050Wrapper {
 		}
 	}
 }
+*/
