@@ -62,6 +62,8 @@ impl ServiceBackend for Se050Wrapper {
 
 //#######################################################################################################################
   
+
+  
 			//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
 
 			Request::GenerateKey(request) => {
