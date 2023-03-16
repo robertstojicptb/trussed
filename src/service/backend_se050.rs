@@ -77,6 +77,25 @@ impl ServiceBackend for Se050Wrapper {
 			},
 
 
+//#######################################################################################################################
+ 
+		   //AN12413, // 4.19 Generic management commands //44.19.5 delete_all P.112
+		  // fn delete_all(&mut self, delay: &mut DelayWrapper) -> Result<(), Se050Error> ;
+
+
+
+		  Request::DeleteAllKeys(request) => {
+			let count = self.device.delete_all( self.delay).unwrap();
+			 
+			Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { count } ))
+		},	
+
+
+
+
+
+
+
 		_ => {
 			Err(Error::RequestNotAvailable)
 		}
@@ -174,3 +193,71 @@ impl ServiceBackend for Se050Wrapper {
 	}
 }
 */
+
+/*
+/* 
+		Request::DeleteAllKeys(request) => {
+			let count = keystore.delete_all(request.location)?;
+			Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { count } ))
+		},	
+
+Request::DeleteAllKeys(request) => {
+			if request.count < 250 {
+				let mut bytes = Message::new();
+				bytes.resize_default(request.count).unwrap();
+
+
+				self.device.delete_all( self.delay).unwrap();
+				Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { bytes } ))
+
+		*/	
+
+
+			} else {
+				Err(Error::RequestNotAvailable)
+			}
+		},
+
+
+
+	
+
+
+
+		Request::RandomBytes(request) => {
+			if request.count < 1024 {
+				let mut bytes = Message::new();
+				bytes.resize_default(request.count).unwrap();
+				self.rng()?.fill_bytes(&mut bytes);
+				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+			} else {
+				Err(Error::MechanismNotAvailable)
+			}
+		}
+
+
+
+		Request::RandomBytes(request) => {
+			if request.count < 250 {
+				let mut bytes = Message::new();
+				bytes.resize_default(request.count).unwrap();
+				self.device.get_random(&mut bytes, self.delay).unwrap();
+				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+			} else {
+				Err(Error::RequestNotAvailable)
+			}
+		},
+
+
+
+
+
+
+
+
+
+
+
+
+
+ */
