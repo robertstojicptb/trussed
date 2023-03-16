@@ -52,8 +52,8 @@ impl ServiceBackend for Se050Wrapper {
 		Request::GenerateKey(request) => {
 			match request.mechanism {
 			Mechanism::P256 => {
-				let objid_2 = self.device.generate_p256_key(self.delay).unwrap();
-				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid_2.into()) }))
+				let objid  = self.device.generate_p256_key(self.delay).unwrap();
+				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
 			}
 			_ => { Err(Error::RequestNotAvailable) }
 			}
@@ -69,8 +69,8 @@ impl ServiceBackend for Se050Wrapper {
 			Request::GenerateKey(request) => {
 				match request.mechanism {
 				Mechanism::Ed255 => {
-					let objid = self.device.generate_ed255_key_pair(self.delay).unwrap();
-					Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+					let objid_2 = self.device.generate_ed255_key_pair(self.delay).unwrap();
+					Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid_2.into()) }))
 				}
 				_ => { Err(Error::RequestNotAvailable) }
 				}
