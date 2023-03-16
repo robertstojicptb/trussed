@@ -87,12 +87,12 @@ impl ServiceBackend for Se050Wrapper {
 		  Request::DeleteAllKeys(request) => {
 			let count = self.device.delete_all( self.delay).unwrap();
 			 
-			Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { count } ))
+			Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { count.into() } ))
 		},	
 
 
 
-
+	 
 
 
 
