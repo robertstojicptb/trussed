@@ -14,7 +14,7 @@ pub struct Se050Wrapper {
 pub struct Se050Parameters {
     // pub pin: Option<[u8; MAX_PIN_LENGTH]>,
 }
-
+/*  
 impl ServiceBackend for Se050Wrapper {
 
 	fn reply_to(&mut self, _client_id: &mut ClientContext, request: &Request) -> Result<Reply> {
@@ -78,6 +78,7 @@ impl ServiceBackend for Se050Wrapper {
 		_ => {
 			Err(Error::RequestNotAvailable)
 		}
+
 		}
 	}
 }
@@ -120,3 +121,48 @@ impl TryFrom<Id> for se050::ObjectId {
 	}
 }
 //bla bla
+
+*/
+
+impl ServiceBackend for Se050Wrapper {
+
+	fn reply_to(&mut self, _client_id: &mut ClientContext, request: &Request) -> Result<Reply> {
+
+		match request {
+
+		Request::Encrypt(request) => {
+			match request.mechanism {
+			Mechanism::Aes256Cbc => { aes_encrypt() },
+			_ => { Err(Error::RequestNotAvailable) }
+			}
+		}.map(Reply::Encrypt),
+
+		Request::RandomBytes(request) => {
+			if request.count < 250 {
+				let mut bytes = Message::new();
+				bytes.resize_default(request.count).unwrap();
+				self.device.get_random(&mut bytes, self.delay).unwrap();
+				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+			} else {
+				Err(Error::RequestNotAvailable)
+			}
+		},
+
+		Request::GenerateKey(request) => {
+			match request.mechanism {
+			Mechanism::P256 => {
+				let objid = self.device.generate_p256_key(self.delay).unwrap();
+				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+			}
+			_ => { Err(Error::RequestNotAvailable) }
+			}
+		},
+		
+
+		_ => {
+			Err(Error::RequestNotAvailable)
+		}
+
+		}
+	}
+}
