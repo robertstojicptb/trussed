@@ -150,14 +150,19 @@ impl ServiceBackend for Se050Wrapper {
 
 		Request::GenerateKey(request) => {
 			match request.mechanism {
+
 			Mechanism::P256 => {
+
 				let objid = self.device.generate_p256_key(self.delay).unwrap();
+
 				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
 			}
+
 			_ => { Err(Error::RequestNotAvailable) }
+			
 			}
 		},
-		
+
 
 		_ => {
 			Err(Error::RequestNotAvailable)
