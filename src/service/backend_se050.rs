@@ -83,13 +83,13 @@ impl ServiceBackend for Se050Wrapper {
 		  // fn delete_all(&mut self, delay: &mut DelayWrapper) -> Result<(), Se050Error> ;
 
 
-
+/*  
 		  Request::DeleteAllKeys(request) => {
 			let count = self.device.delete_all( self.delay).unwrap();
 			 
 			Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { count.into() } ))
 		},	
-
+*/
 
 
 	 
