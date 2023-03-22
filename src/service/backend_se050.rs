@@ -44,6 +44,23 @@ impl ServiceBackend for Se050Wrapper {
 			}
 		},
 
+
+/* 
+		Request::RandomBytes(request) => {
+			if request.count < 1024 {
+				let mut bytes = Message::new();
+				bytes.resize_default(request.count).unwrap();
+				self.rng()?.fill_bytes(&mut bytes);
+				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+			} else {
+				Err(Error::MechanismNotAvailable)
+			}
+		}
+
+*/
+
+
+
 //#######################################################################################################################
  
 		//fn generate_p256_key (&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ;
@@ -58,6 +75,8 @@ impl ServiceBackend for Se050Wrapper {
 			_ => { Err(Error::RequestNotAvailable) }
 			}
 		},
+
+
 
 
 //#######################################################################################################################
@@ -75,6 +94,22 @@ impl ServiceBackend for Se050Wrapper {
 				_ => { Err(Error::RequestNotAvailable) }
 				}
 			},
+/*  
+			Request::GenerateKey(request) => {
+                match request.mechanism {
+                    Mechanism::Chacha8Poly1305 => mechanisms::Chacha8Poly1305::generate_key(keystore, request),
+                    Mechanism::Ed255 => mechanisms::Ed255::generate_key(keystore, request),
+                    Mechanism::P256 => mechanisms::P256::generate_key(keystore, request),
+                    Mechanism::X255 => mechanisms::X255::generate_key(keystore, request),
+                    _ => Err(Error::MechanismNotAvailable),
+                }.map(Reply::GenerateKey)
+            },
+
+*/
+
+
+
+
 
 
 //#######################################################################################################################
@@ -92,8 +127,32 @@ impl ServiceBackend for Se050Wrapper {
 */
 //fff
 
-	 
 
+
+
+
+
+
+	  //AN12413, // 4.19 Generic management commands //44.19.5 delete_all P.112
+	  //fn delete_all(&mut self, delay: &mut DelayWrapper) -> Result<(), Se050Error> ;
+ 
+	  Request::DeleteAllKeys(request)=> {
+		self.device.delete_all(self.delay)
+
+	//	self.device.get_random(&mut bytes, self.delay).unwrap();
+		//		Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+		 
+
+	  }
+
+
+
+/*
+	  Request::DeleteAllKeys(request) => {
+		let count = keystore.delete_all(request.location)?;
+		Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { count } ))
+	},
+*/
 
 
 		_ => {
