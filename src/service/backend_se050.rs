@@ -138,13 +138,14 @@ impl ServiceBackend for Se050Wrapper {
  
 	  Request::DeleteAllKeys(request)=> {
 		self.device.delete_all(self.delay)
+		//Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 
 	//	self.device.get_random(&mut bytes, self.delay).unwrap();
 		//		Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 		 
 
-	  }
-
+	  }.map(Reply::DeleteAllKeys),
+ 
 
 
 /*
