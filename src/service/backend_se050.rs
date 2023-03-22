@@ -137,14 +137,14 @@ impl ServiceBackend for Se050Wrapper {
 	  //fn delete_all(&mut self, delay: &mut DelayWrapper) -> Result<(), Se050Error> ;
  
 	  Request::DeleteAllKeys(request)=> {
-		self.device.delete_all(self.delay)
-		//Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+		self.device.delete_all(self.delay);
+		 Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys{   } ))
 
 	//	self.device.get_random(&mut bytes, self.delay).unwrap();
 		//		Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 		 
 
-	  }.map(Reply::DeleteAllKeys),
+	  }
  
 
 
