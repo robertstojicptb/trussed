@@ -153,7 +153,14 @@ Request::Delete(request) => {
 		  
 		 
 		let success = self.device.delete_secure_object(&[0xae, 0x59, 0xae, 0x59], self.delay).unwrap();
-		Ok(Reply::Delete(reply::Delete { success } ))
+		if succes == ()
+	 
+		{
+let success2 = true;
+
+		}
+		
+		Ok(Reply::Delete(reply::Delete { success2 } ))
  
 },
 
