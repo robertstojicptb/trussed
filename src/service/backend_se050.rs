@@ -108,6 +108,71 @@ impl ServiceBackend for Se050Wrapper {
 */
 
 
+//##############################################################################################
+
+/*  
+fn delete(&mut self, key: KeyId)
+-> ClientResult<'_, reply::Delete, Self>
+{
+let r = self.request(request::Delete {
+	key,
+	// mechanism,
+})?;
+r.client.syscall();
+Ok(r)
+}
+
+Request::Delete(request) => {
+	let success = keystore.delete_key(&request.key);
+	Ok(Reply::Delete(reply::Delete { success } ))
+},
+
+
+*/
+
+// See AN12413// 4.7 Secure Object management  //4.7.4 ManageSecureObject // 4.7.4.5 DeleteSecureObject P.70    
+//fn delete_secure_object(&mut self,objectidentifier: &[u8;4] ,  delay: &mut DelayWrapper) -> Result<(), Se050Error>;
+//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
+
+
+/*  
+Request::GenerateKey(request) => {
+	match request.mechanism {
+	Mechanism::Ed255 => {
+		let objid_2 = self.device.generate_ed255_key_pair(self.delay).unwrap();
+		Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid_2.into()) }))
+	}
+	_ => { Err(Error::RequestNotAvailable) }
+	}
+},
+
+*/
+
+
+Request::Delete(request) => {  
+		  
+		 
+		let success = self.device.delete_secure_object(self.delay).unwrap();
+		Ok(Reply::Delete(reply::Delete { success } ))
+ 
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -135,7 +200,7 @@ impl ServiceBackend for Se050Wrapper {
 
 	  //AN12413, // 4.19 Generic management commands //44.19.5 delete_all P.112
 	  //fn delete_all(&mut self, delay: &mut DelayWrapper) -> Result<(), Se050Error> ;
- 
+ /*  
 	  Request::DeleteAllKeys(request)=> {
 		let count = 1;
 		self.device.delete_all(self.delay);
@@ -147,7 +212,7 @@ impl ServiceBackend for Se050Wrapper {
 
 	  }
  
-
+*/
 
 /*
 	  Request::DeleteAllKeys(request) => {
@@ -155,6 +220,30 @@ impl ServiceBackend for Se050Wrapper {
 		Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { count } ))
 	},
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		_ => {
