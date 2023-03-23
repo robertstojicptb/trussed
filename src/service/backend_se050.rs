@@ -159,6 +159,12 @@ Request::Delete(request) => {
 let success2 = true;
 
 		}
+		else{
+
+			let success2 = false;	
+		}
+
+
 		
 		Ok(Reply::Delete(reply::Delete { success2 } ))
  
