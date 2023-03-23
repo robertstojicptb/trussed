@@ -152,7 +152,7 @@ Request::GenerateKey(request) => {
 Request::Delete(request) => {  
 		  
 		 
-		let success2 = self.device.delete_secure_object(&[0xae, 0x59, 0xae, 0x59], self.delay).unwrap();
+		let success2 = self.device.delete_secure_object(&[0xae, 0x51, 0xae, 0x51], self.delay).unwrap();
 		if success2 == ()
 	 
 		{
