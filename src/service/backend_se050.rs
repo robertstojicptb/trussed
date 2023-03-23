@@ -157,16 +157,17 @@ Request::Delete(request) => {
 	 
 		{
 let success2 = true;
-
+Ok(Reply::Delete(reply::Delete { success2 } ))
 		}
 		else{
 
 			let success2 = false;	
+			Ok(Reply::Delete(reply::Delete { success2 } ))
 		}
 
 
 		
-		Ok(Reply::Delete(reply::Delete { success2 } ))
+		
  
 },
 
