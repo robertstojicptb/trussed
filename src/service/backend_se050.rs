@@ -4,7 +4,7 @@ use crate::types::*;
 use se050::Se050Device;
 
 const SE050_ID_SPACE: u32 = 0x53453530;	 /* 'SE50' */
-
+#[derive(Debug)]
 pub struct Se050Wrapper {
     pub device: &'static mut dyn Se050Device,
     pub delay: &'static mut se050::DelayWrapper,
@@ -88,7 +88,9 @@ impl ServiceBackend for Se050Wrapper {
 			Request::GenerateKey(request) => {
 				match request.mechanism {
 				Mechanism::Ed255 => {
+					
 					let objid_2 = self.device.generate_ed255_key_pair(self.delay).unwrap();
+					debug!("backend_se050 {:#?}", objid_2);
 					Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid_2.into()) }))
 				}
 				_ => { Err(Error::RequestNotAvailable) }
