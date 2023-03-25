@@ -217,7 +217,6 @@ impl<P: Platform> ServiceResources<P> {
             },
 
             Request::GenerateKey(request) => {
-                debug_now!("TRUSSED {:?}", request);
                 match request.mechanism {
                      
                     Mechanism::Chacha8Poly1305 => mechanisms::Chacha8Poly1305::generate_key(keystore, request),

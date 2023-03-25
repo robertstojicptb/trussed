@@ -84,18 +84,20 @@ impl ServiceBackend for Se050Wrapper {
 
 
 			//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
-
+/*  
 			Request::GenerateKey(request) => {
 				match request.mechanism {
 				Mechanism::Ed255 => {
 					
 					let objid = self.device.generate_ed255_key_pair(self.delay).unwrap();
-					debug!("backend_se050 {:#?}", objid);
+					
 					Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
 				}
 				_ => { Err(Error::RequestNotAvailable) }
 				}
 			},
+
+			*/
 /*  
 			Request::GenerateKey(request) => {
                 match request.mechanism {
