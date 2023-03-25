@@ -4,7 +4,7 @@ use crate::types::*;
 use se050::Se050Device;
 
 const SE050_ID_SPACE: u32 = 0x53453530;	 /* 'SE50' */
-#[derive(Debug)]
+ 
 pub struct Se050Wrapper {
     pub device: &'static mut dyn Se050Device,
     pub delay: &'static mut se050::DelayWrapper,
