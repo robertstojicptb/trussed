@@ -84,7 +84,7 @@ impl ServiceBackend for Se050Wrapper {
 
 
 			//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
-/*  
+  
 			Request::GenerateKey(request) => {
 				match request.mechanism {
 				Mechanism::Ed255 => {
@@ -97,7 +97,7 @@ impl ServiceBackend for Se050Wrapper {
 				}
 			},
 
-			*/
+		 
 /*  
 			Request::GenerateKey(request) => {
                 match request.mechanism {
