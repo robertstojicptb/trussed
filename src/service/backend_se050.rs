@@ -116,7 +116,7 @@ impl ServiceBackend for Se050Wrapper {
 					//Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
 
 				}
-
+				_ => { Err(Error::RequestNotAvailable) }
                    // Mechanism::P256 => mechanisms::P256::generate_key(keystore, request),
 
 					//self.device.get_random(&mut bytes, self.delay).unwrap()
@@ -124,8 +124,9 @@ impl ServiceBackend for Se050Wrapper {
 
 
                     //Mechanism::X255 => mechanisms::X255::generate_key(keystore, request),
-                    _ => Err(Error::MechanismNotAvailable),
-                }.map(Reply::GenerateKey)
+                   // _ => Err(Error::MechanismNotAvailable),
+               // }.map(Reply::GenerateKey)
+			}
             },
 
 
