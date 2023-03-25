@@ -215,18 +215,18 @@ impl<P: Platform> ServiceResources<P> {
 
                 }.map(Reply::Exists)
             },
-
+ 
             Request::GenerateKey(request) => {
                 match request.mechanism {
                      
                     Mechanism::Chacha8Poly1305 => mechanisms::Chacha8Poly1305::generate_key(keystore, request),
-                    Mechanism::Ed255 => mechanisms::Ed255::generate_key(keystore, request),
+                //    Mechanism::Ed255 => mechanisms::Ed255::generate_key(keystore, request),
                     Mechanism::P256 => mechanisms::P256::generate_key(keystore, request),
                     Mechanism::X255 => mechanisms::X255::generate_key(keystore, request),
                     _ => Err(Error::MechanismNotAvailable),
                 }.map(Reply::GenerateKey)
             },
-
+ 
             Request::GenerateSecretKey(request) => {
                 let mut secret_key = MediumData::new();
                 let size = request.size;
