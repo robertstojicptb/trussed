@@ -86,18 +86,64 @@ impl ServiceBackend for Se050Wrapper {
 			//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
   
 			Request::GenerateKey(request) => {
+
 				match request.mechanism {
+
 				Mechanism::Ed255 => {
 					
 					let objid = self.device.generate_ed255_key_pair(self.delay).unwrap();
 					
 					Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+
 				}
 				_ => { Err(Error::RequestNotAvailable) }
 				}
 			},
+ 
 
-		 
+
+ //BAUSTELLE
+            Request::GenerateKey(request) => {
+                match request.mechanism {
+                     
+                    //Mechanism::Chacha8Poly1305 => mechanisms::Chacha8Poly1305::generate_key(keystore, request),
+                  //  Mechanism::Ed255 => mechanisms::Ed255::generate_key(keystore, request),
+
+				  Mechanism::Ed255 => {
+					
+				 	self.device.generate_ed255_key_pair(self.delay).unwrap();
+					
+					//Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
+
+				}
+
+                   // Mechanism::P256 => mechanisms::P256::generate_key(keystore, request),
+
+					//self.device.get_random(&mut bytes, self.delay).unwrap()
+
+
+
+                    //Mechanism::X255 => mechanisms::X255::generate_key(keystore, request),
+                    _ => Err(Error::MechanismNotAvailable),
+                }.map(Reply::GenerateKey)
+            },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*  
 			Request::GenerateKey(request) => {
                 match request.mechanism {
