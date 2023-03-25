@@ -110,6 +110,28 @@ impl ServiceBackend for Se050Wrapper {
 
 //##############################################################################################
 
+Request::Delete(request) => {  
+		  
+		 
+	let success2 = self.device.delete_secure_object(&[0xae, 0x51, 0xae, 0x51], self.delay).unwrap();
+	if success2 == ()
+ 
+	{
+let success  = true;
+Ok(Reply::Delete(reply::Delete { success  } ))
+	}
+	else{
+
+		let success  = false;	
+		Ok(Reply::Delete(reply::Delete { success  } ))
+	}
+ 
+
+},
+
+
+
+
 /*  
 fn delete(&mut self, key: KeyId)
 -> ClientResult<'_, reply::Delete, Self>
@@ -149,27 +171,7 @@ Request::GenerateKey(request) => {
 */
 
 
-Request::Delete(request) => {  
-		  
-		 
-		let success2 = self.device.delete_secure_object(&[0xae, 0x51, 0xae, 0x51], self.delay).unwrap();
-		if success2 == ()
-	 
-		{
-let success  = true;
-Ok(Reply::Delete(reply::Delete { success  } ))
-		}
-		else{
 
-			let success  = false;	
-			Ok(Reply::Delete(reply::Delete { success  } ))
-		}
-
-
-		
-		
- 
-},
 
 
 
