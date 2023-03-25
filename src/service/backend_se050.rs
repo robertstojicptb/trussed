@@ -62,7 +62,7 @@ impl ServiceBackend for Se050Wrapper {
 
 
 //#######################################################################################################################
- 
+ /*  
 		//fn generate_p256_key (&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ;
 
 
@@ -76,7 +76,7 @@ impl ServiceBackend for Se050Wrapper {
 			}
 		},
 
-
+*/
 
 
 //#######################################################################################################################
@@ -84,7 +84,7 @@ impl ServiceBackend for Se050Wrapper {
 
 
 			//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
-  
+  /*  
 			Request::GenerateKey(request) => {
 
 				match request.mechanism {
@@ -100,7 +100,7 @@ impl ServiceBackend for Se050Wrapper {
 				}
 			},
  
-
+*/
 
  //BAUSTELLE
             Request::GenerateKey(request) => {
