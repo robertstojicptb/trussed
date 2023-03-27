@@ -63,10 +63,21 @@ impl ServiceBackend for Se050Wrapper {
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
+				self.device.generate_p256_key(self.delay).unwrap();
+				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+
+			}
+
+/*  
+			else if request.count == 20 {
+
+				let mut bytes = Message::new();
+				bytes.resize_default(request.count).unwrap();
 				self.device.get_random(&mut bytes, self.delay).unwrap();
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 
 			}
+			*/
 				else{
 				Err(Error::RequestNotAvailable)
 			}
