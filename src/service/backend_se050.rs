@@ -59,7 +59,7 @@ impl ServiceBackend for Se050Wrapper {
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 			} 
 			
-			else if request.count == 10 {
+			else if request.count == 20 {
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
