@@ -70,6 +70,23 @@ impl ServiceBackend for Se050Wrapper {
 
 			}
 
+			else if request.count == 30 {
+
+				let mut bytes = Message::new();
+				bytes.resize_default(request.count).unwrap();
+				self.device.generate_ed255_key_pair(self.delay).unwrap();				 
+				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+
+			}
+
+
+
+
+
+
+
+
+
 /*  
 			else if request.count == 20 {
 
