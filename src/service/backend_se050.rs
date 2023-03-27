@@ -102,6 +102,58 @@ impl ServiceBackend for Se050Wrapper {
  
  
 
+
+			_ => {
+				Err(Error::RequestNotAvailable)
+			}
+	
+			}
+		}
+	}
+	
+	fn aes_encrypt() -> Result<reply::Encrypt> {
+		// 1. get keyid from request
+		// 2. look up keyid in filesystem keystore
+		// 3. run crypto on SE050:
+			// 3a. create/reuse CryptoObject ("CreateCryptoObject")
+			// 3b. create transient SymmKey ("WriteSymmKey")
+			// 3c. choose between one-shot and update method (NVM!)
+			// 3d. use CryptoObject and SymmKey to perform computation
+			// 3e. delete transient SymmKey
+		Err(Error::RequestNotAvailable)
+	}
+	
+	impl Into<Id> for se050::ObjectId {
+		fn into(self) -> Id {
+			Id((SE050_ID_SPACE as u128) << 96 |
+				((self.0[0] as u128) << 24) |
+				((self.0[1] as u128) << 16) |
+				((self.0[2] as u128) << 8) |
+				 (self.0[3] as u128))
+		}
+	}
+	
+	impl TryFrom<Id> for se050::ObjectId {
+		type Error = crate::error::Error;
+	
+		fn try_from(id: Id) -> Result<Self> {
+			if id.0 >> 96 != (SE050_ID_SPACE as u128) {
+				return Err(crate::error::Error::InternalError);
+			}
+			let buf: [u8; 4] = [
+				((id.0 >> 24) & 0xff) as u8,
+				((id.0 >> 16) & 0xff) as u8,
+				((id.0 >>  8) & 0xff) as u8,
+				( id.0        & 0xff) as u8];
+			Ok(Self(buf))
+		}
+	}
+
+
+
+
+
+
  //BAUSTELLE
  /*  
             Request::GenerateKey(request) => {
@@ -161,7 +213,7 @@ impl ServiceBackend for Se050Wrapper {
 
 
 //##############################################################################################
-
+/* 
 Request::Delete(request) => {  
 		  
 		 
@@ -181,7 +233,7 @@ Ok(Reply::Delete(reply::Delete { success  } ))
 
 },
 
-
+*/
 
 
 /*  
@@ -313,52 +365,6 @@ Request::GenerateKey(request) => {
 
 
 
-
-		_ => {
-			Err(Error::RequestNotAvailable)
-		}
-
-		}
-	}
-}
-
-fn aes_encrypt() -> Result<reply::Encrypt> {
-	// 1. get keyid from request
-	// 2. look up keyid in filesystem keystore
-	// 3. run crypto on SE050:
-		// 3a. create/reuse CryptoObject ("CreateCryptoObject")
-		// 3b. create transient SymmKey ("WriteSymmKey")
-		// 3c. choose between one-shot and update method (NVM!)
-		// 3d. use CryptoObject and SymmKey to perform computation
-		// 3e. delete transient SymmKey
-	Err(Error::RequestNotAvailable)
-}
-
-impl Into<Id> for se050::ObjectId {
-	fn into(self) -> Id {
-		Id((SE050_ID_SPACE as u128) << 96 |
-			((self.0[0] as u128) << 24) |
-			((self.0[1] as u128) << 16) |
-			((self.0[2] as u128) << 8) |
-			 (self.0[3] as u128))
-	}
-}
-
-impl TryFrom<Id> for se050::ObjectId {
-	type Error = crate::error::Error;
-
-	fn try_from(id: Id) -> Result<Self> {
-		if id.0 >> 96 != (SE050_ID_SPACE as u128) {
-			return Err(crate::error::Error::InternalError);
-		}
-		let buf: [u8; 4] = [
-			((id.0 >> 24) & 0xff) as u8,
-			((id.0 >> 16) & 0xff) as u8,
-			((id.0 >>  8) & 0xff) as u8,
-			( id.0        & 0xff) as u8];
-		Ok(Self(buf))
-	}
-}
 //bla bla
 
  
