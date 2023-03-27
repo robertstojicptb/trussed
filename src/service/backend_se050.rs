@@ -55,7 +55,8 @@ impl ServiceBackend for Se050Wrapper {
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
-				self.device.get_random(&mut bytes, self.delay).unwrap();
+			//	self.device.get_random(&mut bytes, self.delay).unwrap();
+				self.device.get_random(&mut bytes, self.delay);
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 			} 
 			
