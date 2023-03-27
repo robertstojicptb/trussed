@@ -32,7 +32,7 @@ impl ServiceBackend for Se050Wrapper {
 //#######################################################################################################################
   
 		//fn get_random(&mut self, buf: &mut [u8], delay: &mut DelayWrapper) -> Result<(), Se050Error>
-
+/* 
 		Request::RandomBytes(request) => {
 			if request.count < 250 {
 				let mut bytes = Message::new();
@@ -43,7 +43,7 @@ impl ServiceBackend for Se050Wrapper {
 				Err(Error::RequestNotAvailable)
 			}
 		},
-
+*/
 
 
   
