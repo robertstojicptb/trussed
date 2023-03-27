@@ -51,7 +51,7 @@ impl ServiceBackend for Se050Wrapper {
 
 		Request::RandomBytes(request) => {
 
-			if request.count == 32{
+			if request.count == 10{
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
@@ -59,7 +59,15 @@ impl ServiceBackend for Se050Wrapper {
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 			} 
 			
-			else {
+			else if request.count == 10 {
+
+				let mut bytes = Message::new();
+				bytes.resize_default(request.count).unwrap();
+				self.device.get_random(&mut bytes, self.delay).unwrap();
+				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+
+			}
+				else{
 				Err(Error::RequestNotAvailable)
 			}
 		},
