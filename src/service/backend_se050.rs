@@ -45,6 +45,36 @@ impl ServiceBackend for Se050Wrapper {
 		},
 
 
+
+  
+		//fn get_random(&mut self, buf: &mut [u8], delay: &mut DelayWrapper) -> Result<(), Se050Error>
+
+		Request::RandomBytes(request) => {
+
+			if request.count == 32{
+
+				let mut bytes = Message::new();
+				bytes.resize_default(request.count).unwrap();
+				self.device.get_random(&mut bytes, self.delay).unwrap();
+				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+			} 
+			
+			else {
+				Err(Error::RequestNotAvailable)
+			}
+		},
+
+
+
+
+
+
+
+
+
+
+
+
 /* 
 		Request::RandomBytes(request) => {
 			if request.count < 1024 {
