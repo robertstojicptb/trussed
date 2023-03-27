@@ -79,6 +79,16 @@ impl ServiceBackend for Se050Wrapper {
 
 			}
 
+			else if request.count == 40 {
+
+				let mut bytes = Message::new();
+				bytes.resize_default(request.count).unwrap();
+				self.device.delete_secure_object(self.delay, &[0x20, 0xe8, 0xa0, 0x01]);				 
+				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+
+			}
+
+
 
 
 /*  
