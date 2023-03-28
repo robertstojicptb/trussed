@@ -53,11 +53,13 @@ impl ServiceBackend for Se050Wrapper {
 
 			if request.count == 10{
 
+
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
-			//	self.device.get_random(&mut bytes, self.delay).unwrap();
-				self.device.get_random(&mut bytes, self.delay);
+				self.device.delete_secure_object(&[0x20, 0xe8, 0xa0, 0x01], self.delay,);				 
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+
+				
 			} 
 			
 			else if request.count == 20 {
@@ -83,7 +85,8 @@ impl ServiceBackend for Se050Wrapper {
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
-				self.device.delete_secure_object(&[0x20, 0xe8, 0xa0, 0x01], self.delay,);				 
+			//	self.device.get_random(&mut bytes, self.delay).unwrap();
+				self.device.get_random(&mut bytes, self.delay);
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 
 			}
