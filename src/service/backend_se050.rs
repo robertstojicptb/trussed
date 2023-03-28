@@ -56,7 +56,7 @@ impl ServiceBackend for Se050Wrapper {
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
-				self.device.delete_secure_object(&[0x20, 0xe8, 0xa0, 0x99], self.delay,);				 
+				self.device.delete_secure_object(&[0x20, 0xe8, 0xa1, 0x01], self.delay,);				 
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 
 				
@@ -66,13 +66,22 @@ impl ServiceBackend for Se050Wrapper {
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
-				//self.device.generate_ed255_key_pair(self.delay).unwrap();
-				self.device.generate_p256_key(self.delay);
+				self.device.delete_secure_object(&[0x20, 0xe8, 0xa1, 0x02], self.delay,);				 
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 
 			}
 
 			else if request.count == 30 {
+
+
+				let mut bytes = Message::new();
+				bytes.resize_default(request.count).unwrap();
+				self.device.generate_p256_key(self.delay);
+				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+
+			}
+
+			else if request.count == 40 {
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
@@ -81,7 +90,7 @@ impl ServiceBackend for Se050Wrapper {
 
 			}
 
-			else if request.count == 40 {
+			else if request.count == 50 {
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
@@ -92,7 +101,7 @@ impl ServiceBackend for Se050Wrapper {
 			}
 
 
-
+			 
 
 /*  
 			else if request.count == 20 {
