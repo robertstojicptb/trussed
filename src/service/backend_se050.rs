@@ -88,9 +88,8 @@ impl ServiceBackend for Se050Wrapper {
 			else if request.count == 1 {
 
 				 let mut bytes = Message::new();
-				 bytes.resize_default(request.count).unwrap();
-				 let mut bytes2 = 0x00;
-				self.device.check_object_exists(&mut bytes2,&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
+				 bytes.resize_default(request.count).unwrap();				
+				self.device.check_object_exists(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 			}
 
