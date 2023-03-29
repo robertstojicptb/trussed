@@ -29,39 +29,21 @@ impl ServiceBackend for Se050Wrapper {
 		}.map(Reply::Encrypt),
 
 
-//#######################################################################################################################
-  
-		//fn get_random(&mut self, buf: &mut [u8], delay: &mut DelayWrapper) -> Result<(), Se050Error>
-/* 
-		Request::RandomBytes(request) => {
-			if request.count < 250 {
-				let mut bytes = Message::new();
-				bytes.resize_default(request.count).unwrap();
-				self.device.get_random(&mut bytes, self.delay).unwrap();
-				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
-			} else {
-				Err(Error::RequestNotAvailable)
-			}
-		},
-*/
-
-
   
 		//fn get_random(&mut self, buf: &mut [u8], delay: &mut DelayWrapper) -> Result<(), Se050Error>
 
 		Request::RandomBytes(request) => {
 
-			if request.count == 10{
-
+			//TEST SE050 primitive delete_secure_object(&[0x20, 0xe8, 0xa1, 0x01], self.delay,);
+			if request.count == 10 {
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
 				self.device.delete_secure_object(&[0x20, 0xe8, 0xa1, 0x01], self.delay,);				 
-				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
-
-				
+				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))				
 			} 
 			
+			//TEST SE050 primitive delete_secure_object(&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
 			else if request.count == 20 {
 
 				let mut bytes = Message::new();
@@ -71,8 +53,8 @@ impl ServiceBackend for Se050Wrapper {
 
 			}
 
+			//TEST SE050 primitive generate_p256_key(self.delay);
 			else if request.count == 30 {
-
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
@@ -81,6 +63,7 @@ impl ServiceBackend for Se050Wrapper {
 
 			}
 
+			//TEST SE050 primitive generate_ed255_key_pair(&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
 			else if request.count == 40 {
 
 				let mut bytes = Message::new();
@@ -90,113 +73,31 @@ impl ServiceBackend for Se050Wrapper {
 
 			}
 
+			//TEST SE050 primitive get_random(&mut bytes, self.delay);
 			else if request.count == 50 {
 
 				let mut bytes = Message::new();
-				bytes.resize_default(request.count).unwrap();
-			//	self.device.get_random(&mut bytes, self.delay).unwrap();
+				bytes.resize_default(request.count).unwrap();		
 				self.device.get_random(&mut bytes, self.delay);
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 
 			}
 
+			//TEST SE050 primitive  check_object_exists(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
 			else if request.count == 60 {
 
 				let mut bytes = Message::new();
 				bytes.resize_default(request.count).unwrap();
-				 //self.device.get_random(&mut bytes, self.delay);
-				 self.device.check_object_exists(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
+				self.device.check_object_exists(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
-
 			}
 
-			 
-
-/*  
-			else if request.count == 20 {
-
-				let mut bytes = Message::new();
-				bytes.resize_default(request.count).unwrap();
-				self.device.get_random(&mut bytes, self.delay).unwrap();
-				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
-
-			}
-			*/
 				else{
 				Err(Error::RequestNotAvailable)
 			}
 		},
 
-
-
-
-
-
-
-
-
-
-
-
-/* 
-		Request::RandomBytes(request) => {
-			if request.count < 1024 {
-				let mut bytes = Message::new();
-				bytes.resize_default(request.count).unwrap();
-				self.rng()?.fill_bytes(&mut bytes);
-				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
-			} else {
-				Err(Error::MechanismNotAvailable)
-			}
-		}
-
-*/
-
-
-
-//#######################################################################################################################
- /*  
-		//fn generate_p256_key (&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ;
-
-
-		Request::GenerateKey(request) => {
-			match request.mechanism {
-			Mechanism::P256 => {
-				let objid  = self.device.generate_p256_key(self.delay).unwrap();
-				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
-			}
-			_ => { Err(Error::RequestNotAvailable) }
-			}
-		},
-
-*/
-
-
-//#######################################################################################################################
-  
-/* 
-
-			//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
- 
-			Request::GenerateKey(request) => {
-
-				match request.mechanism {
-
-				Mechanism::Ed255 => {
-					
-					let objid = self.device.generate_ed255_key_pair(self.delay).unwrap();
-					
-					Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
-
-				}
-				_ => { Err(Error::RequestNotAvailable) }
-				}
-			},
- 
- */
-
-
-			_ => {
+	_ => {
 				Err(Error::RequestNotAvailable)
 			}
 	
@@ -242,339 +143,3 @@ impl ServiceBackend for Se050Wrapper {
 		}
 	}
 
-
-
-
-
-
- //BAUSTELLE
- /*  
-            Request::GenerateKey(request) => {
-                match request.mechanism {
-                     
-                    //Mechanism::Chacha8Poly1305 => mechanisms::Chacha8Poly1305::generate_key(keystore, request),
-                  //  Mechanism::Ed255 => mechanisms::Ed255::generate_key(keystore, request),
-
-				  Mechanism::Ed255 => {
-					
-				 //	self.device.generate_ed255_key_pair(self.delay).unwrap();
-					 let objid = self.device.generate_ed255_key_pair(self.delay).unwrap();
-					 Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
-
-				}
-				_ => { Err(Error::RequestNotAvailable) }
-                   // Mechanism::P256 => mechanisms::P256::generate_key(keystore, request),
-
-					//self.device.get_random(&mut bytes, self.delay).unwrap()
-
-
-
-                    //Mechanism::X255 => mechanisms::X255::generate_key(keystore, request),
-                   // _ => Err(Error::MechanismNotAvailable),
-             //  }.map(Reply::GenerateKey)
-			 }
-            },
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*  
-			Request::GenerateKey(request) => {
-                match request.mechanism {
-                    Mechanism::Chacha8Poly1305 => mechanisms::Chacha8Poly1305::generate_key(keystore, request),
-                    Mechanism::Ed255 => mechanisms::Ed255::generate_key(keystore, request),
-                    Mechanism::P256 => mechanisms::P256::generate_key(keystore, request),
-                    Mechanism::X255 => mechanisms::X255::generate_key(keystore, request),
-                    _ => Err(Error::MechanismNotAvailable),
-                }.map(Reply::GenerateKey)
-            },
-
-*/
-
-
-//##############################################################################################
-/* 
-Request::Delete(request) => {  
-		  
-		 
-	let success2 = self.device.delete_secure_object(&[0xae, 0x51, 0xae, 0x51], self.delay).unwrap();
-	if success2 == ()
- 
-	{
-let success  = true;
-Ok(Reply::Delete(reply::Delete { success  } ))
-	}
-	else{
-
-		let success  = false;	
-		Ok(Reply::Delete(reply::Delete { success  } ))
-	}
- 
-
-},
-
-*/
-
-
-/*  
-fn delete(&mut self, key: KeyId)
--> ClientResult<'_, reply::Delete, Self>
-{
-let r = self.request(request::Delete {
-	key,
-	// mechanism,
-})?;
-r.client.syscall();
-Ok(r)
-}
-
-Request::Delete(request) => {
-	let success = keystore.delete_key(&request.key);
-	Ok(Reply::Delete(reply::Delete { success } ))
-},
-
-
-*/
-
-// See AN12413// 4.7 Secure Object management  //4.7.4 ManageSecureObject // 4.7.4.5 DeleteSecureObject P.70    
-//fn delete_secure_object(&mut self,objectidentifier: &[u8;4] ,  delay: &mut DelayWrapper) -> Result<(), Se050Error>;
-//fn generate_ed255_key_pair(&mut self, delay: &mut DelayWrapper) -> Result<ObjectId, Se050Error> ; 
-
-
-/*  
-Request::GenerateKey(request) => {
-	match request.mechanism {
-	Mechanism::Ed255 => {
-		let objid_2 = self.device.generate_ed255_key_pair(self.delay).unwrap();
-		Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid_2.into()) }))
-	}
-	_ => { Err(Error::RequestNotAvailable) }
-	}
-},
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//#######################################################################################################################
- 
-		   //AN12413, // 4.19 Generic management commands //44.19.5 delete_all P.112
-		  // fn delete_all(&mut self, delay: &mut DelayWrapper) -> Result<(), Se050Error> ;
-
-
-/*  
-		  Request::DeleteAllKeys(request) => {
-			let count = self.device.delete_all( self.delay).unwrap();
-			 
-			Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { count.into() } ))
-		},	
-*/
-//fff
-
-
-
-
-
-
-
-	  //AN12413, // 4.19 Generic management commands //44.19.5 delete_all P.112
-	  //fn delete_all(&mut self, delay: &mut DelayWrapper) -> Result<(), Se050Error> ;
- /*  
-	  Request::DeleteAllKeys(request)=> {
-		let count = 1;
-		self.device.delete_all(self.delay);
-		 Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys{   count} ))
-
-	//	self.device.get_random(&mut bytes, self.delay).unwrap();
-		//		Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
-		 
-
-	  }
- 
-*/
-
-/*
-	  Request::DeleteAllKeys(request) => {
-		let count = keystore.delete_all(request.location)?;
-		Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { count } ))
-	},
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//bla bla
-
- 
-/*  
-impl ServiceBackend for Se050Wrapper {
-
-	fn reply_to(&mut self, _client_id: &mut ClientContext, request: &Request) -> Result<Reply> {
-
-		match request {
-
-		Request::Encrypt(request) => {
-			match request.mechanism {
-			Mechanism::Aes256Cbc => { aes_encrypt() },
-			_ => { Err(Error::RequestNotAvailable) }
-			}
-		}.map(Reply::Encrypt),
-
-		Request::RandomBytes(request) => {
-			if request.count < 250 {
-				let mut bytes = Message::new();
-				bytes.resize_default(request.count).unwrap();
-				self.device.get_random(&mut bytes, self.delay).unwrap();
-				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
-			} else {
-				Err(Error::RequestNotAvailable)
-			}
-		},
-
-		Request::GenerateKey(request) => {
-			match request.mechanism {
-
-			Mechanism::P256 => {
-
-				let objid = self.device.generate_p256_key(self.delay).unwrap();
-
-				Ok(Reply::GenerateKey(reply::GenerateKey { key: KeyId(objid.into()) }))
-			}
-
-			_ => { Err(Error::RequestNotAvailable) }
-
-			}
-		},
-
-
-		_ => {
-			Err(Error::RequestNotAvailable)
-		}
-
-		}
-	}
-}
-*/
-
-/*
-/* 
-		Request::DeleteAllKeys(request) => {
-			let count = keystore.delete_all(request.location)?;
-			Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { count } ))
-		},	
-
-Request::DeleteAllKeys(request) => {
-			if request.count < 250 {
-				let mut bytes = Message::new();
-				bytes.resize_default(request.count).unwrap();
-
-
-				self.device.delete_all( self.delay).unwrap();
-				Ok(Reply::DeleteAllKeys(reply::DeleteAllKeys { bytes } ))
-
-		*/	
-
-
-			} else {
-				Err(Error::RequestNotAvailable)
-			}
-		},
-
-
-
-	
-
-
-
-		Request::RandomBytes(request) => {
-			if request.count < 1024 {
-				let mut bytes = Message::new();
-				bytes.resize_default(request.count).unwrap();
-				self.rng()?.fill_bytes(&mut bytes);
-				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
-			} else {
-				Err(Error::MechanismNotAvailable)
-			}
-		}
-
-
-
-		Request::RandomBytes(request) => {
-			if request.count < 250 {
-				let mut bytes = Message::new();
-				bytes.resize_default(request.count).unwrap();
-				self.device.get_random(&mut bytes, self.delay).unwrap();
-				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
-			} else {
-				Err(Error::RequestNotAvailable)
-			}
-		},
-
-
-
-
-
-
-
-
-
-
-
-
-
- */
