@@ -84,7 +84,7 @@ impl ServiceBackend for Se050Wrapper {
 
 			}
 
-			//TEST SE050 primitive  check_object_exists(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
+			//TEST SE050 primitive  check_object_exists(&mut bytes,&[0x20, 0xe8, 0xa1, 0x01], self.delay,);
 			else if request.count == 1 {
 
 				 let mut bytes = Message::new();
@@ -92,7 +92,8 @@ impl ServiceBackend for Se050Wrapper {
 				self.device.check_object_exists(&mut bytes,&[0x20, 0xe8, 0xa1, 0x01], self.delay,);
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 			}
-
+	//TEST SE050 primitive  check_object_exists(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
+	
 			else if request.count == 2 {
 
 				let mut bytes = Message::new();
@@ -101,6 +102,30 @@ impl ServiceBackend for Se050Wrapper {
 			   Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 		   }
 
+
+	//TEST SEO50 primitive    write_ec_key(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02],&[0x03], self.delay,);
+	// generate p256 key with &[0x03]) -  NIST P-256 
+
+
+		   else if request.count == 3 {
+
+			let mut bytes = Message::new();
+			bytes.resize_default(request.count).unwrap();				
+		   self.device.write_ec_key(&mut bytes,&[0x20, 0xe8, 0xa1, 0x01], &[0x03], self.delay,); 
+		   Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+	   }
+
+	//TEST SEO50 primitive    write_ec_key(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02],&[0x03], self.delay,);
+	// generate ed255 key with &[0x40]) -  //ED255
+
+
+	else if request.count == 4 {
+
+		let mut bytes = Message::new();
+		bytes.resize_default(request.count).unwrap();				
+	   self.device.write_ec_key(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], &[0x43], self.delay,); 
+	   Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+   }
 
 
 				else{
