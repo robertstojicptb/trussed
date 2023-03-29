@@ -123,7 +123,7 @@ impl ServiceBackend for Se050Wrapper {
 
 		let mut bytes = Message::new();
 		bytes.resize_default(request.count).unwrap();				
-	   self.device.write_ec_key(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], &[0x43], self.delay,); 
+	   self.device.write_ec_key(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], &[0x40], self.delay,); 
 	   Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
    }
 
