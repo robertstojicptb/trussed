@@ -132,6 +132,18 @@ impl ServiceBackend for Se050Wrapper {
    }
 
 
+   else if request.count == 5 {
+
+	let mut bytes = Message::new();
+	bytes.resize_default(4).unwrap();				
+   self.device.read_secure_object(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], self.delay,); 
+   Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
+}
+
+
+
+
+
 				else{
 				Err(Error::RequestNotAvailable)
 			}
