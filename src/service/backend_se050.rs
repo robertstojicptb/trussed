@@ -134,10 +134,10 @@ impl ServiceBackend for Se050Wrapper {
 //TEST SEO50 primitive    read_secure_object   &[0x20, 0xe8, 0xa1, 0x02]
 	// generate ed255 key with &[0x40]) -  //ED255
 
-   else if request.count == 32 {
+   else if request.count == 100 {
 
 	let mut bytes = Message::new();
-	 bytes.resize_default(32).unwrap(); //SLICE LENGTH 32 da 4byte		
+	 bytes.resize_default(100).unwrap(); //SLICE LENGTH 32 da 4byte		
 	//bytes.resize_default(request.count).unwrap();
 
    self.device.read_secure_object(&mut bytes,&[0x20, 0xe8, 0xa1, 0x01], self.delay,); 
