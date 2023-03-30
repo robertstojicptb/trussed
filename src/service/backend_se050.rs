@@ -119,7 +119,7 @@ impl ServiceBackend for Se050Wrapper {
 		   Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 	   }
 
-	//TEST SEO50 primitive    write_ec_key(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02],&[0x03], self.delay,);
+	//TEST SEO50 primitive    write_ec_key &mut bytes,&[0x20, 0xe8, 0xa1, 0x02] 
 	// generate ed255 key with &[0x40]) -  //ED255
 
 
@@ -131,6 +131,8 @@ impl ServiceBackend for Se050Wrapper {
 	   Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
    }
 
+//TEST SEO50 primitive    read_secure_object   &[0x20, 0xe8, 0xa1, 0x02]
+	// generate ed255 key with &[0x40]) -  //ED255
 
    else if request.count == 5 {
 
