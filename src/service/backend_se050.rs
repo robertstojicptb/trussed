@@ -137,7 +137,7 @@ impl ServiceBackend for Se050Wrapper {
    else if request.count == 100 {
 
 	let mut bytes = Message::new();
-	 bytes.resize_default(request.count); //SLICE LENGTH 32 da 4byte		
+	// bytes.resize_default(request.count); //SLICE LENGTH 32 da 4byte		
 	 bytes.resize_default(32); //SLICE LENGTH 32 da 4byte
 	//bytes.resize_default(request.count).unwrap();
 
