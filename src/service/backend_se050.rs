@@ -137,8 +137,9 @@ impl ServiceBackend for Se050Wrapper {
    else if request.count == 32 {
 
 	let mut bytes = Message::new();
-	//bytes.resize_default(32).unwrap(); //SLICE LENGTH 32 da 4byte		
-	bytes.resize_default(request.count).unwrap();
+	 bytes.resize_default(32).unwrap(); //SLICE LENGTH 32 da 4byte		
+	//bytes.resize_default(request.count).unwrap();
+
    self.device.read_secure_object(&mut bytes,&[0x20, 0xe8, 0xa1, 0x01], self.delay,); 
    Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 }
