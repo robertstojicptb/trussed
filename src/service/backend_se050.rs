@@ -93,7 +93,7 @@ impl ServiceBackend for Se050Wrapper {
 				//self.device.check_object_exists(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
 				Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 			}
-	/*  
+	 
 		//TEST SE050 primitive  check_object_exists(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
 	
 			else if request.count == 2 {
@@ -103,7 +103,7 @@ impl ServiceBackend for Se050Wrapper {
 			   self.device.check_object_exists(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02], self.delay,);
 			   Ok(Reply::RandomBytes(reply::RandomBytes { bytes } ))
 		   }
-*/
+
 
 	//TEST SEO50 primitive    write_ec_key(&mut bytes,&[0x20, 0xe8, 0xa1, 0x02],&[0x03], self.delay,);
 	// generate p256 key with &[0x03]) -  NIST P-256 
