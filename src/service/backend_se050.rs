@@ -134,7 +134,7 @@ impl ServiceBackend for Se050Wrapper {
 //TEST SEO50 primitive    read_secure_object   &[0x20, 0xe8, 0xa1, 0x02]
 	// generate ed255 key with &[0x40]) -  //ED255
 
-   else if request.count == 100 {
+   else if request.count == 32 {
 
 	let mut bytes = Message::new();
 	// bytes.resize_default(request.count); //SLICE LENGTH 32 da 4byte		
